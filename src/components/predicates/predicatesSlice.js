@@ -6,20 +6,25 @@ export const predicatesSlice = createSlice({
   initialState: {
     currentValue: '',
     lastValidValue: '',
-    errMessgage: ''
+    errMessgage: '',
+    predicates: []
   },
   reducers: {
     update: (state, action) => {
       state.currentValue = action.payload;
-      let predicates = null;
+      let arr = null;
       try {
-        predicates = parsePredicates(state.currentValue);
+        arr = parsePredicates(state.currentValue);
       } catch (err) {
         state.errMessgage = err.message;
       }
-      if (predicates != null) {
+      if (arr != null) {
         state.lastValidValue = state.currentValue;
         state.errMessgage = '';
+        state.predicates = arr.map((x) => ({
+          name: x.name,
+          arity: x.arity
+        }));
       }
     }
   }
@@ -29,5 +34,6 @@ export const { update } = predicatesSlice.actions;
 
 export const selectCurrentValue = state => state.predicates.currentValue;
 export const selectErrMessage = state => state.predicates.errMessgage;
+export const selectPredicates = state => state.predicates.predicates;
 
 export default predicatesSlice.reducer;

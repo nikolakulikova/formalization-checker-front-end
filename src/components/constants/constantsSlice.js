@@ -6,20 +6,22 @@ export const constantsSlice = createSlice({
   initialState: {
     currentValue: '',
     lastValidValue: '',
-    errMessgage: ''
+    errMessgage: '',
+    constants: []
   },
   reducers: {
     update: (state, action) => {
       state.currentValue = action.payload;
-      let constants = null;
+      let arr = null;
       try {
-        constants = parseConstants(state.currentValue);
+        arr = parseConstants(state.currentValue);
       } catch (err) {
         state.errMessgage = err.message;
       }
-      if (constants != null) {
+      if (arr != null) {
         state.lastValidValue = state.currentValue;
         state.errMessgage = '';
+        state.constants = arr;
       }
     }
   }
@@ -29,5 +31,6 @@ export const { update } = constantsSlice.actions;
 
 export const selectCurrentValue = state => state.constants.currentValue;
 export const selectErrMessage = state => state.constants.errMessgage;
+export const selectConstants = state => state.constants.constants;
 
 export default constantsSlice.reducer;

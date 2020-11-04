@@ -25,6 +25,9 @@ function Formalizations(props) {
               formalizationNum: i
           }))}
         />
+        <Form.Text className="Error">
+          {x.errMessage}
+        </Form.Text>
         <Button
           className="EraseFormalizationButton"
           variant="danger"
