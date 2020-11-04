@@ -4,14 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { update } from './constantsSlice';
 import {
   selectCurrentValue,
-  /*selectLastValidValue,
-  selectErrorStr*/
+  selectErrMessage
 } from './constantsSlice';
 
 function Constants() {
-  const value = useSelector(selectCurrentValue);
-  //const lastValidValue = useSelector(selectLastValidValue);
-  //const errorStr = useSelector(selectErrorStr);
+  const currentValue = useSelector(selectCurrentValue);
+  const errMessage = useSelector(selectErrMessage);
 
   const dispatch = useDispatch();
 
@@ -21,9 +19,12 @@ function Constants() {
       <Form.Control
         as="textarea"
         placeholder="Enter constants"
-        value={value}
+        value={currentValue}
         onChange={e => dispatch(update(e.target.value))}
       />
+      <Form.Text className="Error">
+        {errMessage}
+      </Form.Text>
     </Form.Group>
   );
 }

@@ -36,3 +36,35 @@
     transform: rotate(360deg);
   }
 }
+
+.Error {
+  color: #ff0000;
+  float: left;
+}
+
+.Formula {
+  border-bottom: 1px solid #a0a0a0;
+}
+
+.AddFormalizationButton {
+  float: right;
+  margin-top: 5px;
+}
+
+.AddNextFormulaButton {
+  float: left;
+  margin: 15px;
+}
+
+.EraseFormulaButton {
+  float: right;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.EraseFormalizationButton {
+  float: right;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}

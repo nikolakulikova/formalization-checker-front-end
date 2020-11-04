@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   updateInformalValue,
   addNewFormula,
-  addNewFormalization
+  addNewFormalization,
+  removeFormula
 } from './formulasSlice';
 import { selectValues } from './formulasSlice';
 import Formalizations from './Formalizations';
@@ -16,7 +17,7 @@ function Formulas() {
 
   const listItems = values.map((x, index) =>
     <Form.Group key={index}>
-      <Row>
+      <Row className="Formula">
         <Col>
           <Form.Control
             as="textarea"
@@ -28,11 +29,20 @@ function Formulas() {
             }))}
           />
           <Button
+            className="EraseFormulaButton"
+            variant="danger"
+            size="sm"
+            onClick={() => dispatch(removeFormula(index))}
+          >
+            Remove this formula
+          </Button>
+          <Button
+            className="AddFormalizationButton"
             variant="primary"
             size="sm"
             onClick={() => dispatch(addNewFormalization(index))}
           >
-            Add new formalization
+            Add formalization
           </Button>
         </Col>
         <Col>
@@ -51,15 +61,14 @@ function Formulas() {
       </Row>
       {listItems}
       <Row>
-        <Col>
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => dispatch(addNewFormula())}
-          >
-            Add new formula
-          </Button>
-        </Col>
+        <Button
+          className="AddNextFormulaButton"
+          variant="primary"
+          size="lg"
+          onClick={() => dispatch(addNewFormula())}
+        >
+          Add formula
+        </Button>
       </Row>
     </Form.Group>
   );

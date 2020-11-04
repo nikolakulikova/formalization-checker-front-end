@@ -4,14 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { update } from './predicatesSlice';
 import {
   selectCurrentValue,
-  /*selectLastValidValue,
-  selectErrorStr*/
+  selectErrMessage
 } from './predicatesSlice';
 
 function Predicates() {
-  const value = useSelector(selectCurrentValue);
-  //const lastValidValue = useSelector(selectLastValidValue);
-  //const errorStr = useSelector(selectErrorStr);
+  const currentValue = useSelector(selectCurrentValue);
+  const errMessage = useSelector(selectErrMessage);
 
   const dispatch = useDispatch();
 
@@ -21,9 +19,12 @@ function Predicates() {
       <Form.Control
         as="textarea"
         placeholder="Enter predicates"
-        value={value}
+        value={currentValue}
         onChange={e => dispatch(update(e.target.value))}
       />
+      <Form.Text className="Error">
+        {errMessage}
+      </Form.Text>
     </Form.Group>
   );
 }

@@ -8,7 +8,7 @@ export const formulasSlice = createSlice({
       formalizations: [{
         currentValue: '',
         lastValidValue: '',
-        errorStr: ''
+        errMessage: ''
       }]
     }]
   },
@@ -31,7 +31,7 @@ export const formulasSlice = createSlice({
         formalizations:[{
           currentValue: '',
           lastValidValue: '',
-          errorStr: ''
+          errMessage: ''
         }]
       });
     },
@@ -40,8 +40,16 @@ export const formulasSlice = createSlice({
       state.formulas[formulaNum].formalizations.push({
         currentValue: '',
         lastValidValue: '',
-        errorStr: ''
+        errMessage: ''
       });
+    },
+    removeFormula: (state, action) => {
+      state.formulas.splice(action.payload, 1);
+    },
+    removeFormalization: (state, action) => {
+      const formulaNum = action.payload.formulaNum;
+      const formalizationNum = action.payload.formalizationNum;
+      state.formulas[formulaNum].formalizations.splice(formalizationNum, 1);
     }
   }
 });
@@ -50,7 +58,9 @@ export const {
   updateInformalValue,
   updateFormalization,
   addNewFormula,
-  addNewFormalization
+  addNewFormalization,
+  removeFormula,
+  removeFormalization
 } = formulasSlice.actions;
 
 export const selectValues = state => state.formulas.formulas;
