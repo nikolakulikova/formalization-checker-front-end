@@ -1,25 +1,17 @@
 import React from 'react';
-import { Form, Container, Row, Col, Jumbotron } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import { Provider } from 'react-redux';
-import store from './store';
-import Constants from './constants/Constants';
-import Predicates from './predicates/Predicates';
-import Formulas from './formulas/Formulas';
+import store from '../redux/store';
+import LanguageSection from './LanguageSection';
+import PropositionsSection from './PropositionsSection';
 
 function TeacherApp() {
   return (
     <Provider store={store}>
       <Container>
         <Form>
-          <Jumbotron>
-            <Row>
-              <Col><Constants /></Col>
-              <Col><Predicates /></Col>
-            </Row>
-          </Jumbotron>
-          <Row>
-            <Col><Formulas /></Col>
-          </Row>
+          <LanguageSection />
+          <PropositionsSection />
         </Form>
       </Container>
     </Provider>

@@ -42,29 +42,19 @@
   float: left;
 }
 
-.Formula {
-  border-bottom: 1px solid #a0a0a0;
-}
-
-.AddFormalizationButton {
+.AddNewPropositionButton {
   float: right;
-  margin-top: 5px;
+  margin-top: 15px;
+  margin-bottom: 50px;
 }
 
-.AddNextFormulaButton {
-  float: left;
-  margin: 15px;
-}
-
-.EraseFormulaButton {
+.SmallButton {
   float: right;
   margin-top: 5px;
   margin-left: 5px;
   margin-bottom: 5px;
 }
 
-.EraseFormalizationButton {
-  float: right;
-  margin-top: 5px;
-  margin-bottom: 15px;
+.Label {
+  float: left;
 }
