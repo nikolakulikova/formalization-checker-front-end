@@ -8,7 +8,7 @@ import {
 
 function Constants(props) {
   return (
-    <Row>
+    <Row className="LanguageSectionField">
       <Col>
         <Form.Group controlId="formConstants">
           <Form.Label className="Label">

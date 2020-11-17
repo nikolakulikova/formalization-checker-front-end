@@ -6,7 +6,7 @@ import Functions from './Functions';
 
 function LanguageSection() {
   return (
-    <Row>
+    <Row className="AppSection">
       <Col>
         <Row>
           <h2>Language</h2>

@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {
-  addNewFormalization,
   removeFormalization,
   updateFormalization,
   selectFormalization
@@ -13,13 +12,14 @@ function Formalization(props) {
     <Row>
       <Col>
         <Form.Group
+          className="Formalization"
           controlId={"formFormalization" + props.i + "." + props.j}
         >
           <Form.Label className="Label">
             {"Formalization " + (props.i + 1) + "." + (props.j + 1)}
           </Form.Label>
           <Form.Control
-            as="textarea"
+            type="text"
             placeholder="Enter formalization"
             value={props.value}
             onChange={e => props.update(e.target.value, props.i, props.j)}
@@ -51,7 +51,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: i => dispatch(addNewFormalization(i)),
     remove: (i, j) => dispatch(removeFormalization({
       i: i,
       j: j

@@ -16,40 +16,44 @@ function Proposition(props) {
   ));
 
   return (
-    <Row>
-      <Col>
-        <Form.Group controlId={"formProposition" + props.i}>
-          <Form.Label className="Label">
-            {"Proposition " + (props.i + 1)}
-          </Form.Label>
-          <Form.Control
-            as="textarea"
-            placeholder="Enter proposition"
-            value={props.value}
-            onChange={e => props.update(e.target.value, props.i)}
-          />
+    <div className="Proposition">
+      <Row>
+        <Col>
+          <Form.Group controlId={"formProposition" + props.i}>
+            <Form.Label className="Label">
+              {"Proposition " + (props.i + 1)}
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter proposition"
+              value={props.value}
+              onChange={e => props.update(e.target.value, props.i)}
+            />
+            <Button
+              className="SmallButton"
+              variant="outline-danger"
+              size="sm"
+              onClick={() => props.remove(props.i)}
+            >
+              Remove this proposition
+            </Button>
+          </Form.Group>
+        </Col>
+      </Row>
+      {formalizations}
+      <Row>
+        <Col>
           <Button
-            className="SmallButton"
-            variant="outline-danger"
+            className="AddFormalizationButton"
+            variant="primary"
             size="sm"
-            onClick={() => props.remove(props.i)}
+            onClick={() => props.add(props.i)}
           >
-            Remove this proposition
+            Add formalization
           </Button>
-        </Form.Group>
-      </Col>
-      <Col>
-        {formalizations}
-        <Button
-          className="SmallButton"
-          variant="primary"
-          size="sm"
-          onClick={() => props.add(props.i)}
-        >
-          Add new formalization
-        </Button>
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </div>
   );
 }
 

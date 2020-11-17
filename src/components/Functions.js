@@ -8,7 +8,7 @@ import {
 
 function Functions(props) {
   return (
-    <Row>
+    <Row className="LanguageSectionField">
       <Col>
         <Form.Group controlId="formFunctions">
           <Form.Label className="Label">

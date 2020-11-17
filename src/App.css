@@ -37,22 +37,44 @@
   }
 }
 
+.AppSection {
+  margin-top: 15px;
+}
+
+.LanguageSectionField {
+  margin-top: 10px;
+}
+
+.Proposition {
+  margin-top: 10px;
+  border-bottom: 1px solid #808080;
+}
+
+.Formalization {
+  margin-left: 7%;
+}
+
 .Error {
   color: #ff0000;
   float: left;
+  text-align: left;
 }
 
 .AddNewPropositionButton {
   float: right;
   margin-top: 15px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
+}
+
+.AddFormalizationButton {
+  float: right;
+  margin-top: 5px;
+  margin-bottom: 15px;
 }
 
 .SmallButton {
   float: right;
   margin-top: 5px;
-  margin-left: 5px;
-  margin-bottom: 5px;
 }
 
 .Label {

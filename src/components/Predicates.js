@@ -8,7 +8,7 @@ import {
 
 function Predicates(props) {
   return (
-    <Row>
+    <Row className="LanguageSectionField">
       <Col>
         <Form.Group controlId="formPredicates">
           <Form.Label className="Label">

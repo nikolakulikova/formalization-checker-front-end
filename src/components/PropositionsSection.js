@@ -13,7 +13,7 @@ function PropositionsSection(props) {
   ));
 
   return (
-    <Row>
+    <Row className="AppSection">
       <Col>
         <Row>
           <h2>Propositions</h2>
