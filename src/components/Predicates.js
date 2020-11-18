@@ -18,7 +18,7 @@ function Predicates(props) {
             type="text"
             placeholder="Enter predicates"
             value={props.value}
-            onChange={e => props.update(e.target.value)}
+            onChange={(e) => props.update(e.target.value)}
           />
           <Form.Text className="Error">
             {props.error}
@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    update: value => dispatch(updatePredicates(value))
+    update: (value) => dispatch(updatePredicates(value))
   };
 };
 

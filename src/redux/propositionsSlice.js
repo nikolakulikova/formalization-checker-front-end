@@ -22,7 +22,7 @@ export const propositionsSlice = createSlice({
       const j = action.payload.j;
       state.propositionsInput[i].formalizations[j] = value;
     },
-    addNewProposition: (state, action) => {
+    addNewProposition: (state) => {
       state.propositionsInput.push({
         informalValue: '',
         formalizations: ['']
@@ -60,10 +60,10 @@ function parse(input, constants, predicates, functions, parser) {
   ]);
 
   const language = {
-    isConstant: x => constants.has(x),
-    isPredicate: x => predicates.has(x),
-    isFunction: x => functions.has(x),
-    isVariable: x => !nonLogicalSymbols.has(x)
+    isConstant: (x) => constants.has(x),
+    isPredicate: (x) => predicates.has(x),
+    isFunction: (x) => functions.has(x),
+    isVariable: (x) => !nonLogicalSymbols.has(x)
   };
 
   const factories = {

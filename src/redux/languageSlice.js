@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   parseConstants,
   parsePredicates,
-  parseFunctions,
+  parseFunctions
 } from '@fmfi-uk-1-ain-412/js-fol-parser';
 
 export const languageSlice = createSlice({
@@ -44,21 +44,44 @@ function parse(input, parser) {
 
 function checkForDuplicates(values) {
   let found = new Set();
-  for (let i = 0; i < values.length; i++) {
-    if (found.has(values[i])) {
-      return 'Found duplicate symbol: "' + values[i] + '"';
+  for (let x of values) {
+    if (found.has(x)) {
+      return 'Found duplicate symbol: "' + x + '"';
     } else {
-      found.add(values[i]);
+      found.add(x);
     }
   }
+
+  return null;
+}
+
+function checkForClashes(constants, predicates, functions) {
+  for (let x of constants) {
+    if (predicates.has(x)) {
+      return 'Found clash in language definition: "'
+        + x + '" in constants and predicates';
+    }
+    if (functions.has(x)) {
+      return 'Found clash in language definition: "'
+        + x + '" in constants and functions';
+    }
+  }
+
+  for (let x of predicates.keys()) {
+    if (functions.has(x)) {
+      return 'Found clash in language definition: "'
+        + x + '" in predicates and functions';
+    }
+  }
+
   return null;
 }
 
 function arrayToArityMap(symbols) {
   let arityMap = new Map();
-  for (let i = 0; i < symbols.length; i++) {
-    if (!arityMap.has(symbols[i].name)) {
-      arityMap.set(symbols[i].name, symbols[i].arity);
+  for (let x of symbols) {
+    if (!arityMap.has(x.name)) {
+      arityMap.set(x.name, x.arity);
     }
   }
   return arityMap;
@@ -108,22 +131,32 @@ export const selectFunctionsParsed = (state) => {
 };
 
 export const selectLanguage = (state) => {
-  let constants = parse(state.language.constantsInput, parseConstants);
-  let predicates = parse(state.language.predicatesInput, parsePredicates);
-  let functions = parse(state.language.functionsInput, parseFunctions);
+  let constantsParsed = parse(state.language.constantsInput, parseConstants);
+  let predicatesParsed = parse(state.language.predicatesInput, parsePredicates);
+  let functionsParsed = parse(state.language.functionsInput, parseFunctions);
 
-  let containsErrors = constants.error || predicates.error || functions.error;
-  let containsDuplicates = checkForDuplicates(constants.result)
-    || checkForDuplicates(predicates.result.map(x => x.name))
-    || checkForDuplicates(functions.result.map(x => x.name));
+  let constants = new Set(constantsParsed.result);
+  let predicates = arrayToArityMap(predicatesParsed.result);
+  let functions = arrayToArityMap(functionsParsed.result);
+
+  let containsErrors = constantsParsed.error
+    || predicatesParsed.error
+    || functionsParsed.error;
+  let containsDuplicates = checkForDuplicates(constantsParsed.result)
+    || checkForDuplicates(predicatesParsed.result.map(x => x.name))
+    || checkForDuplicates(functionsParsed.result.map(x => x.name));
   
-  let error = containsErrors || containsDuplicates
-    ? 'Language definition contains errors'
-    : null;
+  let error = null;
+  if (containsErrors || containsDuplicates) {
+    error = "Language definition contains errors";
+  } else {
+    error = checkForClashes(constants, predicates, functions);
+  }
+
   return {
-    constants: new Set(constants.result),
-    predicates: arrayToArityMap(predicates.result),
-    functions: arrayToArityMap(functions.result),
+    constants: constants,
+    predicates: predicates,
+    functions: functions,
     error: error
   };
 };

@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import Constants from './Constants';
 import Predicates from './Predicates';
 import Functions from './Functions';
+import Clashes from './Clashes';
 
 function LanguageSection() {
   return (
@@ -14,6 +15,7 @@ function LanguageSection() {
         <Constants />
         <Predicates />
         <Functions />
+        <Clashes />
       </Col>
     </Row>
   );

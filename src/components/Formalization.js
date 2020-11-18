@@ -22,7 +22,7 @@ function Formalization(props) {
             type="text"
             placeholder="Enter formalization"
             value={props.value}
-            onChange={e => props.update(e.target.value, props.i, props.j)}
+            onChange={(e) => props.update(e.target.value, props.i, props.j)}
           />
           <Form.Text className="Error">
             {props.error}

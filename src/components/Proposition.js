@@ -27,7 +27,7 @@ function Proposition(props) {
               type="text"
               placeholder="Enter proposition"
               value={props.value}
-              onChange={e => props.update(e.target.value, props.i)}
+              onChange={(e) => props.update(e.target.value, props.i)}
             />
             <Button
               className="SmallButton"
@@ -66,8 +66,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: i => dispatch(addNewFormalization(i)),
-    remove: i => dispatch(removeProposition(i)),
+    add: (i) => dispatch(addNewFormalization(i)),
+    remove: (i) => dispatch(removeProposition(i)),
     update: (value, i) => dispatch(updateInformalValue({
       value: value,
       i: i
