@@ -1,12 +1,13 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import SyntaxError from './SyntaxError';
 import {
   updateConstants,
   selectConstantsParsed
 } from '../redux/languageSlice';
 
-function Constants(props) {
+function Constants(props) {  
   return (
     <Row className="LanguageSectionField">
       <Col>
@@ -20,9 +21,7 @@ function Constants(props) {
             value={props.value}
             onChange={(e) => props.update(e.target.value)}
           />
-          <Form.Text className="Error">
-            {props.error}
-          </Form.Text>
+          <SyntaxError value={props.value} error={props.error} />
         </Form.Group>
       </Col>
     </Row>

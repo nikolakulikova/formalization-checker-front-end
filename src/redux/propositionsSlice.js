@@ -87,8 +87,8 @@ function parse(input, constants, predicates, functions, parser) {
 
   try {
     parser(input, language, factories);
-  } catch (err) {
-    return err.message;
+  } catch (error) {
+    return error;
   }
 
   return null;
@@ -119,12 +119,6 @@ export const selectInformalValue = (state, i) => {
 export const selectFormalization = (state, i, j) => {
   let value = state.propositions.propositionsInput[i].formalizations[j];
   let language = selectLanguage(state);
-  if (language.error) {
-    return {
-      value: value,
-      error: language.error
-    };
-  }
   let error = parse(value, language.constants, language.predicates,
     language.functions, parseFormulaWithPrecedence);
   return {

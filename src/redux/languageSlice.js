@@ -30,10 +30,10 @@ function parse(input, parser) {
   let result;
   try {
     result = parser(input);
-  } catch (err) {
+  } catch (error) {
     return {
       result: [],
-      error: err.message
+      error: error
     };
   }
   return {
@@ -42,11 +42,11 @@ function parse(input, parser) {
   };
 }
 
-function checkForDuplicates(values) {
+function checkForDuplicates(values, name) {
   let found = new Set();
   for (let x of values) {
     if (found.has(x)) {
-      return 'Found duplicate symbol: "' + x + '"';
+      return 'Found duplicate symbol: "' + x + '" in ' + name;
     } else {
       found.add(x);
     }
@@ -97,36 +97,27 @@ export const {
 export const selectConstantsParsed = (state) => {
   let value = state.language.constantsInput;
   let result = parse(value, parseConstants);
-  let error = result.error
-    ? result.error
-    : checkForDuplicates(result.result);
   return {
     value: value,
-    error: error
+    error: result.error
   };
 };
 
 export const selectPredicatesParsed = (state) => {
   let value = state.language.predicatesInput;
   let result = parse(value, parsePredicates);
-  let error = result.error
-    ? result.error
-    : checkForDuplicates(result.result.map(x => x.name));
   return {
     value: value,
-    error: error
+    error: result.error
   };
 };
 
 export const selectFunctionsParsed = (state) => {
   let value = state.language.functionsInput;
   let result = parse(value, parseFunctions);
-  let error = result.error
-    ? result.error
-    : checkForDuplicates(result.result.map(x => x.name));
   return {
     value: value,
-    error: error
+    error: result.error
   };
 };
 
@@ -142,22 +133,24 @@ export const selectLanguage = (state) => {
   let containsErrors = constantsParsed.error
     || predicatesParsed.error
     || functionsParsed.error;
-  let containsDuplicates = checkForDuplicates(constantsParsed.result)
-    || checkForDuplicates(predicatesParsed.result.map(x => x.name))
-    || checkForDuplicates(functionsParsed.result.map(x => x.name));
+  let containsDuplicates = checkForDuplicates(constantsParsed.result, "constants")
+    || checkForDuplicates(predicatesParsed.result.map(x => x.name), "predicates")
+    || checkForDuplicates(functionsParsed.result.map(x => x.name), "functions");
   
-  let error = null;
-  if (containsErrors || containsDuplicates) {
-    error = "Language definition contains errors";
+  let errorMessage = null;
+  if (containsErrors) {
+    errorMessage = "Language definition contains errors";
+  } else if (containsDuplicates) {
+    errorMessage = containsDuplicates;
   } else {
-    error = checkForClashes(constants, predicates, functions);
+    errorMessage = checkForClashes(constants, predicates, functions);
   }
 
   return {
     constants: constants,
     predicates: predicates,
     functions: functions,
-    error: error
+    errorMessage: errorMessage
   };
 };
 

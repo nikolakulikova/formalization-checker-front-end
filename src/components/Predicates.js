@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import SyntaxError from './SyntaxError';
 import {
   updatePredicates,
   selectPredicatesParsed
@@ -20,9 +21,7 @@ function Predicates(props) {
             value={props.value}
             onChange={(e) => props.update(e.target.value)}
           />
-          <Form.Text className="Error">
-            {props.error}
-          </Form.Text>
+          <SyntaxError value={props.value} error={props.error} />
         </Form.Group>
       </Col>
     </Row>

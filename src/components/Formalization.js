@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import SyntaxError from './SyntaxError';
 import {
   removeFormalization,
   updateFormalization,
@@ -24,9 +25,7 @@ function Formalization(props) {
             value={props.value}
             onChange={(e) => props.update(e.target.value, props.i, props.j)}
           />
-          <Form.Text className="Error">
-            {props.error}
-          </Form.Text>
+          <SyntaxError value={props.value} error={props.error} />
           <Button
             className="SmallButton"
             variant="outline-danger"

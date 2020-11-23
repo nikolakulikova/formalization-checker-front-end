@@ -50,6 +50,12 @@
   font-size: 14pt;
 }
 
+.ClashesMessage {
+  float: left;
+  text-align: left;
+  color: #ff0000;
+}
+
 .Proposition {
   margin-top: 10px;
   border-bottom: 1px solid #808080;
@@ -60,9 +66,16 @@
 }
 
 .Error {
-  color: #ff0000;
   float: left;
   text-align: left;
+}
+
+.ErrorMessage {
+  color: #ff0000;
+}
+
+.ErrorHighlighted {
+  background-color: #ffa07a;
 }
 
 .AddNewPropositionButton {

@@ -6,11 +6,11 @@ import {
 } from '../redux/languageSlice';
 
 function Clashes(props) {
-  return props.error ? (
+  return props.errorMessage ? (
     <Row className="Clashes">
       <Col>
-        <p className="Error">
-          {props.error}
+        <p className="ClashesMessage">
+          {props.errorMessage}
         </p>
       </Col>
     </Row>
@@ -20,7 +20,7 @@ function Clashes(props) {
 
 const mapStateToProps = (state) => {
   return {
-    error: selectLanguage(state).error
+    errorMessage: selectLanguage(state).errorMessage
   };
 };
 
