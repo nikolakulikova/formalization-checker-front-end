@@ -17,9 +17,9 @@ function SyntaxError(props) {
     null : (
       <div>
         {str_1}
-        <span className="ErrorHighlighted">
+        <u class="bg-warning">
           {str_2}
-        </span>
+        </u>
         {str_3}
       </div>
     );
