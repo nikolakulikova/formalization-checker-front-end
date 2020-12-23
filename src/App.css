@@ -47,12 +47,9 @@
 
 .Clashes {
   margin-top: 20px;
-  font-size: 14pt;
-}
-
-.ClashesMessage {
   float: left;
   text-align: left;
+  font-size: 20px;
   color: #ff0000;
 }
 
@@ -74,16 +71,20 @@
   color: #ff0000;
 }
 
+.SaveExerciseButton {
+  margin-bottom: 50px;
+}
+
 .AddNewPropositionButton {
   float: right;
-  margin-top: 15px;
-  margin-bottom: 100px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .AddFormalizationButton {
   float: right;
   margin-top: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .SmallButton {

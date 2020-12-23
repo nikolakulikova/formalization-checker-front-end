@@ -5,7 +5,7 @@ import SyntaxError from './SyntaxError';
 import {
   updateConstants,
   selectConstantsParsed
-} from '../redux/languageSlice';
+} from '../redux/newExerciseSlice';
 
 function Constants(props) {  
   return (

@@ -5,7 +5,7 @@ import Proposition from './Proposition';
 import {
   addNewProposition,
   selectPropositions
-} from '../redux/propositionsSlice';
+} from '../redux/newExerciseSlice';
 
 function PropositionsSection(props) {
   const propositions = props.propositions.map((x, i) => (
@@ -22,7 +22,7 @@ function PropositionsSection(props) {
         <Button
           className="AddNewPropositionButton"
           variant="primary"
-          size="lg"
+          size="sm"
           onClick={() => props.add()}
         >
           Add new proposition

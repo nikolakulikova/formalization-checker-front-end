@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import languageReducer from './languageSlice';
-import propositionsReducer from './propositionsSlice';
+import newExerciseReducer from './newExerciseSlice';
 
 export default configureStore({
   reducer: {
-    language: languageReducer,
-    propositions: propositionsReducer
+    newExercise: newExerciseReducer
   }
 });

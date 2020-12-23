@@ -17,7 +17,7 @@ function SyntaxError(props) {
     null : (
       <div>
         {str_1}
-        <u class="bg-warning">
+        <u className="bg-warning">
           {str_2}
         </u>
         {str_3}

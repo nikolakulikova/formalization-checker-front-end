@@ -6,7 +6,7 @@ import {
   removeFormalization,
   updateFormalization,
   selectFormalization
-} from '../redux/propositionsSlice';
+} from '../redux/newExerciseSlice';
 
 function Formalization(props) {
   return (

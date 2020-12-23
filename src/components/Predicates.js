@@ -5,7 +5,7 @@ import SyntaxError from './SyntaxError';
 import {
   updatePredicates,
   selectPredicatesParsed
-} from '../redux/languageSlice';
+} from '../redux/newExerciseSlice';
 
 function Predicates(props) {
   return (

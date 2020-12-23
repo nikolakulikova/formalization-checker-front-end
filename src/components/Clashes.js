@@ -3,15 +3,13 @@ import { Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {
   selectLanguage
-} from '../redux/languageSlice';
+} from '../redux/newExerciseSlice';
 
 function Clashes(props) {
   return props.errorMessage ? (
     <Row className="Clashes">
       <Col>
-        <p className="ClashesMessage">
-          {props.errorMessage}
-        </p>
+        <p>{props.errorMessage}</p>
       </Col>
     </Row>
   )

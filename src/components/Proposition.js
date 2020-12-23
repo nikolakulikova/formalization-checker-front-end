@@ -8,7 +8,7 @@ import {
   updateInformalValue,
   selectInformalValue,
   selectFormalizations
-} from '../redux/propositionsSlice';
+} from '../redux/newExerciseSlice';
 
 function Proposition(props) {
   const formalizations = props.formalizations.map((x, j) => (

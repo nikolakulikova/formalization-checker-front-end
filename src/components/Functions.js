@@ -5,7 +5,7 @@ import SyntaxError from './SyntaxError';
 import {
   updateFunctions,
   selectFunctionsParsed
-} from '../redux/languageSlice';
+} from '../redux/newExerciseSlice';
 
 function Functions(props) {
   return (
