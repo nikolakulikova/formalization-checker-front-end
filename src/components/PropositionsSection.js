@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Proposition from './Proposition';
 import {
@@ -7,28 +7,24 @@ import {
   selectPropositions
 } from '../redux/newExerciseSlice';
 
-function PropositionsSection(props) {
-  const propositions = props.propositions.map((x, i) => (
+function PropositionsSection({ propositions, add }) {
+  const propositions_list = propositions.map((x, i) => (
     <Proposition key={i} i={i} />
   ));
 
   return (
-    <Row className="AppSection">
-      <Col>
-        <Row>
-          <h2>Propositions</h2>
-        </Row>
-        {propositions}
-        <Button
-          className="AddNewPropositionButton"
-          variant="primary"
-          size="sm"
-          onClick={() => props.add()}
-        >
-          Add new proposition
-        </Button>
-      </Col>
-    </Row>
+    <div className="mt-3 mb-4 clearfix">
+      <h2>Propositions</h2>
+      {propositions_list}
+      <Button
+        className="mt-2 float-right"
+        variant="primary"
+        size="sm"
+        onClick={() => add()}
+      >
+        Add proposition
+      </Button>
+    </div>
   );
 }
 
@@ -38,10 +34,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    add: () => dispatch(addNewProposition())
-  };
-};
+const mapDispatchToProps = { add: addNewProposition };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropositionsSection);

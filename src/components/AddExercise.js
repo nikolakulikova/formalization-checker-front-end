@@ -5,28 +5,20 @@ import { addNewExercise, selectExercise } from '../redux/newExerciseSlice';
 import LanguageSection from './LanguageSection';
 import PropositionsSection from './PropositionsSection';
 
-function AddExercise(props) {
-  let containsErrors = false;
-  if (props.exerciseError) {
-    containsErrors = true;
-  }
-
+function AddExercise({ exercise, exerciseError, addExercise }) {
   return (
     <Container>
       <Form>
         <LanguageSection />
         <PropositionsSection />
         <Button
-          className="SaveExerciseButton"
+          className="mt-4 mb-5 float-right clearfix"
           variant="primary"
           size="lg"
-          onClick={() => {
-            if (!containsErrors) {
-              props.addNewExercise(props.exercise);
-            }
-          }}
+          disabled={exerciseError}
+          onClick={() => addExercise(exercise)}
         >
-          Save this exercise
+          Save exercise
         </Button>
       </Form>
     </Container>
@@ -37,18 +29,16 @@ const mapStateToProps = (state) => {
   let exercise = selectExercise(state);
   if (exercise.error) {
     return {
+      exericse: null,
       exerciseError: exercise.error
     };
   }
   return {
-    exercise: exercise
+    exercise: exercise,
+    exerciseError: null
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addNewExercise: (exercise) => dispatch(addNewExercise(exercise))
-  };
-};
+const mapDispatchToProps = { addExercise: addNewExercise };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddExercise);

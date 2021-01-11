@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SyntaxError from './SyntaxError';
 import {
@@ -8,35 +8,30 @@ import {
   selectFormalization
 } from '../redux/newExerciseSlice';
 
-function Formalization(props) {
+function Formalization({ i, j, value, error, remove, update }) {
   return (
-    <Row>
-      <Col>
-        <Form.Group
-          className="Formalization"
-          controlId={"formFormalization" + props.i + "." + props.j}
+    <div className="clearfix pl-5">
+      <Form.Group className="mb-0">
+        <Form.Label>
+          {"Formalization " + (i + 1) + "." + (j + 1)}
+        </Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter formalization"
+          value={value}
+          onChange={(e) => update(e.target.value, i, j)}
+        />
+        <Button
+          className="mt-1 float-right"
+          variant="outline-danger"
+          size="sm"
+          onClick={() => remove(i, j)}
         >
-          <Form.Label className="Label">
-            {"Formalization " + (props.i + 1) + "." + (props.j + 1)}
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter formalization"
-            value={props.value}
-            onChange={(e) => props.update(e.target.value, props.i, props.j)}
-          />
-          <SyntaxError value={props.value} error={props.error} />
-          <Button
-            className="SmallButton"
-            variant="outline-danger"
-            size="sm"
-            onClick={() => props.remove(props.i, props.j)}
-          >
-            Remove
-          </Button>
-        </Form.Group>
-      </Col>
-    </Row>
+          Remove
+        </Button>
+        <SyntaxError value={value} error={error} />
+      </Form.Group>
+    </div>
   );
 }
 
@@ -48,18 +43,9 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    remove: (i, j) => dispatch(removeFormalization({
-      i: i,
-      j: j
-    })),
-    update: (value, i, j) => dispatch(updateFormalization({
-      value: value,
-      i: i,
-      j: j
-    }))
-  };
+const mapDispatchToProps = {
+  remove: removeFormalization,
+  update: updateFormalization
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Formalization);

@@ -28,16 +28,23 @@ export const newExerciseSlice = createSlice({
     updateFunctions: (state, action) => {
       state.functions = action.payload;
     },
-    updateInformalValue: (state, action) => {
-      const value = action.payload.value;
-      const i = action.payload.i;
-      state.propositions[i].proposition = value;
+    updateInformalValue: {
+      reducer: (state, action) => {
+        const { value, i } = action.payload;
+        state.propositions[i].proposition = value;
+      },
+      prepare: (value, i) => {
+        return { payload: { value, i } };
+      }
     },
-    updateFormalization: (state, action) => {
-      const value = action.payload.value;
-      const i = action.payload.i;
-      const j = action.payload.j;
-      state.propositions[i].formalizations[j] = value;
+    updateFormalization: {
+      reducer: (state, action) => {
+        const { value, i, j } = action.payload;
+        state.propositions[i].formalizations[j] = value;
+      },
+      prepare: (value, i, j) => {
+        return { payload: { value, i, j } };
+      }
     },
     addNewProposition: (state) => {
       state.propositions.push({
@@ -53,10 +60,14 @@ export const newExerciseSlice = createSlice({
       const i = action.payload;
       state.propositions.splice(i, 1);
     },
-    removeFormalization: (state, action) => {
-      const i = action.payload.i;
-      const j = action.payload.j;
-      state.propositions[i].formalizations.splice(j, 1);
+    removeFormalization: {
+      reducer: (state, action) => {
+        const { i, j } = action.payload;
+        state.propositions[i].formalizations.splice(j, 1);
+      },
+      prepare: (i, j) => {
+        return { payload: { i, j } };
+      }
     }
   }
 });

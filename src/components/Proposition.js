@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Formalization from './Formalization';
 import {
@@ -10,49 +10,41 @@ import {
   selectFormalizations
 } from '../redux/newExerciseSlice';
 
-function Proposition(props) {
-  const formalizations = props.formalizations.map((x, j) => (
-    <Formalization key={j} i={props.i} j={j} />
+function Proposition({ i, value, formalizations, add, remove, update }) {
+  const formalizations_list = formalizations.map((x, j) => (
+    <Formalization key={j} i={i} j={j} />
   ));
 
   return (
-    <div className="Proposition">
-      <Row>
-        <Col>
-          <Form.Group controlId={"formProposition" + props.i}>
-            <Form.Label className="Label">
-              {"Proposition " + (props.i + 1)}
-            </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter proposition"
-              value={props.value}
-              onChange={(e) => props.update(e.target.value, props.i)}
-            />
-            <Button
-              className="SmallButton"
-              variant="outline-danger"
-              size="sm"
-              onClick={() => props.remove(props.i)}
-            >
-              Remove this proposition
-            </Button>
-          </Form.Group>
-        </Col>
-      </Row>
-      {formalizations}
-      <Row>
-        <Col>
-          <Button
-            className="AddFormalizationButton"
-            variant="primary"
-            size="sm"
-            onClick={() => props.add(props.i)}
-          >
-            Add formalization
-          </Button>
-        </Col>
-      </Row>
+    <div className="clearfix mb-2 border-bottom border-dark">
+      <Form.Group className="clearfix mb-0">
+        <Form.Label>
+          {"Proposition " + (i + 1)}
+        </Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter proposition"
+          value={value}
+          onChange={(e) => update(e.target.value, i)}
+        />
+        <Button
+          className="mt-1 float-right"
+          variant="outline-danger"
+          size="sm"
+          onClick={() => remove(i)}
+        >
+          Remove proposition
+        </Button>
+      </Form.Group>
+      {formalizations_list}
+      <Button
+        className="mt-2 mb-3 float-right"
+        variant="primary"
+        size="sm"
+        onClick={() => add(i)}
+      >
+        Add formalization
+      </Button>
     </div>
   );
 }
@@ -64,15 +56,10 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    add: (i) => dispatch(addNewFormalization(i)),
-    remove: (i) => dispatch(removeProposition(i)),
-    update: (value, i) => dispatch(updateInformalValue({
-      value: value,
-      i: i
-    }))
-  };
+const mapDispatchToProps = {
+  add: addNewFormalization,
+  remove: removeProposition,
+  update: updateInformalValue
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Proposition);

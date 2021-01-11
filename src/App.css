@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,63 +31,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.AppSection {
-  margin-top: 15px;
-}
-
-.LanguageSectionField {
-  margin-top: 10px;
-}
-
-.Clashes {
-  margin-top: 20px;
-  float: left;
-  text-align: left;
-  font-size: 20px;
-  color: #ff0000;
-}
-
-.Proposition {
-  margin-top: 10px;
-  border-bottom: 1px solid #808080;
-}
-
-.Formalization {
-  margin-left: 7%;
-}
-
-.Error {
-  float: left;
-  text-align: left;
-}
-
-.ErrorMessage {
-  color: #ff0000;
-}
-
-.SaveExerciseButton {
-  margin-bottom: 50px;
-}
-
-.AddNewPropositionButton {
-  float: right;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-.AddFormalizationButton {
-  float: right;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-
-.SmallButton {
-  float: right;
-  margin-top: 5px;
-}
-
-.Label {
-  float: left;
 }

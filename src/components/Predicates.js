@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SyntaxError from './SyntaxError';
 import {
@@ -7,39 +7,25 @@ import {
   selectPredicatesParsed
 } from '../redux/newExerciseSlice';
 
-function Predicates(props) {
+function Predicates({ value, error, update }) {
   return (
-    <Row className="LanguageSectionField">
-      <Col>
-        <Form.Group controlId="formPredicates">
-          <Form.Label className="Label">
-            Predicates:
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter predicates"
-            value={props.value}
-            onChange={(e) => props.update(e.target.value)}
-          />
-          <SyntaxError value={props.value} error={props.error} />
-        </Form.Group>
-      </Col>
-    </Row>
+    <Form.Group>
+      <Form.Label>
+        Predicates:
+      </Form.Label>
+      <Form.Control
+        type="text"
+        placeholder="Enter predicates"
+        value={value}
+        onChange={(e) => update(e.target.value)}
+      />
+      <SyntaxError value={value} error={error} />
+    </Form.Group>
   );
 }
 
-const mapStateToProps = (state) => {
-  const data = selectPredicatesParsed(state);
-  return {
-    value: data.value,
-    error: data.error
-  };
-};
+const mapStateToProps = selectPredicatesParsed;
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    update: (value) => dispatch(updatePredicates(value))
-  };
-};
+const mapDispatchToProps = { update: updatePredicates };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Predicates);
