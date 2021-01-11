@@ -14,6 +14,7 @@ import URL from '../serverURL';
 export const newExerciseSlice = createSlice({
   name: 'newExercise',
   initialState: {
+    title: '',
     constants: '',
     predicates: '',
     functions: '',
@@ -23,6 +24,9 @@ export const newExerciseSlice = createSlice({
     }]
   },
   reducers: {
+    updateExerciseTitle: (state, action) => {
+      state.title = action.payload;
+    },
     updateConstants: (state, action) => {
       state.constants = action.payload;
     },
@@ -79,6 +83,7 @@ export const newExerciseSlice = createSlice({
 
 /* export actions */
 export const {
+  updateExerciseTitle,
   updateConstants,
   updatePredicates,
   updateFunctions,
@@ -201,6 +206,12 @@ function parseFormalization(input, constants, predicates, functions, parser) {
 
 /* selectors */
 
+export const selectExerciseTitle = (state) => {
+  return {
+    value: state.newExercise.title
+  };
+};
+
 export const selectConstantsParsed = createSelector(
   [ state => state.newExercise.constants ],
   (value) => {
@@ -295,12 +306,19 @@ export const selectFormalization = createSelector(
 );
 
 export const selectExercise = (state) => {
+  if (state.newExercise.title === "") {
+    return {
+      containsErrors: true
+    };
+  }
+
   let language = selectLanguage(state);
   if (language.errorMessage) {
     return {
       containsErrors: true
     };
   }
+
   let propositions = selectPropositions(state);
   for (let i = 0; i < propositions.length; i++) {
     let formalizations = propositions[i].formalizations;
@@ -313,7 +331,9 @@ export const selectExercise = (state) => {
       }
     }
   }
+  
   return {
+    title: state.newExercise.title,
     constants: state.newExercise.constants,
     predicates: state.newExercise.predicates,
     functions: state.newExercise.functions,

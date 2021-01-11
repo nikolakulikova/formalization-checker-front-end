@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 import { addNewExercise, selectExercise } from '../redux/newExerciseSlice';
 import LanguageSection from './LanguageSection';
 import PropositionsSection from './PropositionsSection';
+import ExerciseTitle from './ExerciseTitle';
 
 function AddExercise({ exercise, containsErrors, addExercise }) {
   return (
     <Container>
-      <Form>
+      <Form className="mt-3">
+        <h2>New exercise</h2>
+        <ExerciseTitle />
         <LanguageSection />
         <PropositionsSection />
         <Button

@@ -14,7 +14,7 @@ function PropositionsSection({ propositions, add }) {
 
   return (
     <div className="mt-3 mb-4 clearfix">
-      <h2>Propositions</h2>
+      <h4>Propositions</h4>
       {propositions_list}
       <Button
         className="mt-2 float-right"
