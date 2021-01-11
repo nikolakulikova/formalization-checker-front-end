@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createSelector,
+  createAsyncThunk
+} from '@reduxjs/toolkit';
 import {
   parseConstants,
   parsePredicates,
@@ -93,7 +97,7 @@ function checkForDuplicates(values, name) {
   let found = new Set();
   for (let x of values) {
     if (found.has(x)) {
-      return 'Found duplicate symbol: "' + x + '" in ' + name;
+      return `Found duplicate symbol: '${x}' in ${name}`;
     } else {
       found.add(x);
     }
@@ -105,19 +109,16 @@ function checkForDuplicates(values, name) {
 function checkForClashes(constants, predicates, functions) {
   for (let x of constants) {
     if (predicates.has(x)) {
-      return 'Found clash in language definition: "'
-        + x + '" in constants and predicates';
+      return `Found clash in language definition: '${x}' in constants and predicates`;
     }
     if (functions.has(x)) {
-      return 'Found clash in language definition: "'
-        + x + '" in constants and functions';
+      return `Found clash in language definition: '${x}' in constants and functions`;
     }
   }
 
   for (let x of predicates.keys()) {
     if (functions.has(x)) {
-      return 'Found clash in language definition: "'
-        + x + '" in predicates and functions';
+      return `Found clash in language definition: '${x}' in predicates and functions`;
     }
   }
 
@@ -138,12 +139,12 @@ function parseLanguageSubset(input, parser) {
   try {
     let result = parser(input);
     return {
-      result: result,
+      array: result,
       error: null
     };
   } catch (error) {
     return {
-      result: [],
+      array: [],
       error: error
     };
   }
@@ -200,71 +201,72 @@ function parseFormalization(input, constants, predicates, functions, parser) {
 
 /* selectors */
 
-export const selectConstantsParsed = (state) => {
-  let value = state.newExercise.constants;
-  let result = parseLanguageSubset(value, parseConstants);
-  return {
-    value: value,
-    error: result.error
-  };
-};
-
-export const selectPredicatesParsed = (state) => {
-  let value = state.newExercise.predicates;
-  let result = parseLanguageSubset(value, parsePredicates);
-  return {
-    value: value,
-    error: result.error
-  };
-};
-
-export const selectFunctionsParsed = (state) => {
-  let value = state.newExercise.functions;
-  let result = parseLanguageSubset(value, parseFunctions);
-  return {
-    value: value,
-    error: result.error
-  };
-};
-
-export const selectLanguage = (state) => {
-  let constantsParsed = parseLanguageSubset(
-    state.newExercise.constants, parseConstants
-  );
-  let predicatesParsed = parseLanguageSubset(
-    state.newExercise.predicates, parsePredicates
-  );
-  let functionsParsed = parseLanguageSubset(
-    state.newExercise.functions, parseFunctions
-  );
-
-  let constants = new Set(constantsParsed.result);
-  let predicates = arrayToArityMap(predicatesParsed.result);
-  let functions = arrayToArityMap(functionsParsed.result);
-
-  let containsErrors = constantsParsed.error
-    || predicatesParsed.error
-    || functionsParsed.error;
-  let containsDuplicates = checkForDuplicates(constantsParsed.result, "constants")
-    || checkForDuplicates(predicatesParsed.result.map(x => x.name), "predicates")
-    || checkForDuplicates(functionsParsed.result.map(x => x.name), "functions");
-  
-  let errorMessage = null;
-  if (containsErrors) {
-    errorMessage = "Language definition contains errors";
-  } else if (containsDuplicates) {
-    errorMessage = containsDuplicates;
-  } else {
-    errorMessage = checkForClashes(constants, predicates, functions);
+export const selectConstantsParsed = createSelector(
+  [ state => state.newExercise.constants ],
+  (value) => {
+    let result = parseLanguageSubset(value, parseConstants);
+    return {
+      value: value,
+      array: result.array,
+      error: result.error
+    };
   }
+);
 
-  return {
-    constants: constants,
-    predicates: predicates,
-    functions: functions,
-    errorMessage: errorMessage
-  };
-};
+export const selectPredicatesParsed = createSelector(
+  [ state => state.newExercise.predicates ],
+  (value) => {
+    let result = parseLanguageSubset(value, parsePredicates);
+    return {
+      value: value,
+      array: result.array,
+      error: result.error
+    };
+  }
+);
+
+export const selectFunctionsParsed = createSelector(
+  [ state => state.newExercise.functions ],
+  (value) => {
+    let result = parseLanguageSubset(value, parseFunctions);
+    return {
+      value: value,
+      array: result.array,
+      error: result.error
+    };
+  }
+);
+
+export const selectLanguage = createSelector(
+  [
+    selectConstantsParsed,
+    selectPredicatesParsed,
+    selectFunctionsParsed
+  ],
+  (constantsParsed, predicatesParsed, functionsParsed) => {
+    let constants = new Set(constantsParsed.array);
+    let predicates = arrayToArityMap(predicatesParsed.array);
+    let functions = arrayToArityMap(functionsParsed.array);
+
+    let containsErrors = constantsParsed.error
+      || predicatesParsed.error
+      || functionsParsed.error;
+    let containsDuplicates = checkForDuplicates(constantsParsed.array, "constants")
+      || checkForDuplicates(predicatesParsed.array.map(x => x.name), "predicates")
+      || checkForDuplicates(functionsParsed.array.map(x => x.name), "functions");
+    
+    let errorMessage = null;
+    if (containsErrors) {
+      errorMessage = "Language definition contains errors";
+    } else if (containsDuplicates) {
+      errorMessage = containsDuplicates;
+    } else {
+      errorMessage = checkForClashes(constants, predicates, functions);
+    }
+
+    return { constants, predicates, functions, errorMessage };
+  }
+);
 
 export const selectPropositions = (state) => {
   return state.newExercise.propositions;
@@ -278,34 +280,35 @@ export const selectInformalValue = (state, i) => {
   return state.newExercise.propositions[i].proposition;
 };
 
-export const selectFormalization = (state, i, j) => {
-  let value = state.newExercise.propositions[i].formalizations[j];
-  let language = selectLanguage(state);
-  let error = parseFormalization(
-    value, language.constants, language.predicates,
-    language.functions, parseFormulaWithPrecedence
-  );
-  return {
-    value: value,
-    error: error
-  };
-};
+export const selectFormalization = createSelector(
+  [
+    (state, i, j) => state.newExercise.propositions[i].formalizations[j],
+    (state, i, j) => selectLanguage(state)
+  ],
+  (value, language) => {
+    let error = parseFormalization(
+      value, language.constants, language.predicates,
+      language.functions, parseFormulaWithPrecedence
+    );
+    return { value, error };
+  }
+);
 
 export const selectExercise = (state) => {
   let language = selectLanguage(state);
   if (language.errorMessage) {
     return {
-      error: language.errorMessage
+      containsErrors: true
     };
   }
-  let propositions = state.newExercise.propositions;
+  let propositions = selectPropositions(state);
   for (let i = 0; i < propositions.length; i++) {
     let formalizations = propositions[i].formalizations;
     for (let j = 0; j < formalizations.length; j++) {
-      let result = selectFormalization(state, i, j);
-      if (result.error) {
+      let formalization = selectFormalization(state, i, j);
+      if (formalization.error) {
         return {
-          error: result.error
+          containsErrors: true
         };
       }
     }
@@ -314,7 +317,8 @@ export const selectExercise = (state) => {
     constants: state.newExercise.constants,
     predicates: state.newExercise.predicates,
     functions: state.newExercise.functions,
-    propositions: state.newExercise.propositions
+    propositions: state.newExercise.propositions,
+    containsErrors: false
   };
 };
 

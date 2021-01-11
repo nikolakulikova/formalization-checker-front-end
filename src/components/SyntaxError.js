@@ -25,7 +25,7 @@ function SyntaxError({ value, error }) {
     );
 
   return (
-    <Form.Text>
+    <Form.Text className="mb-3">
       {str}
       <div className="text-danger">
         {error.message}

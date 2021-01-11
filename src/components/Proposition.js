@@ -38,7 +38,7 @@ function Proposition({ i, value, formalizations, add, remove, update }) {
       </Form.Group>
       {formalizations_list}
       <Button
-        className="mt-2 mb-3 float-right"
+        className="mt-1 mb-3 float-right"
         variant="primary"
         size="sm"
         onClick={() => add(i)}

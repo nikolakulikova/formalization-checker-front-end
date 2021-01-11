@@ -5,7 +5,7 @@ import { addNewExercise, selectExercise } from '../redux/newExerciseSlice';
 import LanguageSection from './LanguageSection';
 import PropositionsSection from './PropositionsSection';
 
-function AddExercise({ exercise, exerciseError, addExercise }) {
+function AddExercise({ exercise, containsErrors, addExercise }) {
   return (
     <Container>
       <Form>
@@ -15,7 +15,7 @@ function AddExercise({ exercise, exerciseError, addExercise }) {
           className="mt-4 mb-5 float-right clearfix"
           variant="primary"
           size="lg"
-          disabled={exerciseError}
+          disabled={containsErrors}
           onClick={() => addExercise(exercise)}
         >
           Save exercise
@@ -27,15 +27,15 @@ function AddExercise({ exercise, exerciseError, addExercise }) {
 
 const mapStateToProps = (state) => {
   let exercise = selectExercise(state);
-  if (exercise.error) {
+  if (exercise.containsErrors) {
     return {
-      exericse: null,
-      exerciseError: exercise.error
+      exercise: null,
+      containsErrors: true
     };
   }
   return {
     exercise: exercise,
-    exerciseError: null
+    containsErrors: false
   };
 };
 
