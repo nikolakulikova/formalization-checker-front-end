@@ -19,8 +19,19 @@ function ExerciseForm({ exercise_id, exercise, status, error, fetchExercise }) {
   if (status === 'loading') {
     content = <Spinner animation="border" variant="primary" />;
   } else if (status === 'succeeded') {
-    console.log(exercise);
-    content = <p>{ exercise_id }</p>;
+    const propositions_list = exercise.propositions.map((x) => (
+      <p key={x.proposition_id}>{ x.proposition }</p>
+    ));
+    content = (
+      <div>
+        <h2>{ exercise.title }</h2>
+        <p>{ exercise.constants }</p>
+        <p>{ exercise.predicates }</p>
+        <p>{ exercise.functions }</p>
+        <p>{ exercise.constants }</p>
+        { propositions_list }
+      </div>
+    );
   } else if (status === 'failed') {
     content = <div>{error}</div>
   }
