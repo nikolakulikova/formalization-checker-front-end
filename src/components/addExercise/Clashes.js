@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   selectLanguage
-} from '../redux/newExerciseSlice';
+} from '../../redux/addExerciseSlice';
 
 function Clashes({ errorMessage }) {
   return errorMessage ? (

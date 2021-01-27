@@ -6,7 +6,7 @@ import {
   removeFormalization,
   updateFormalization,
   selectFormalization
-} from '../redux/newExerciseSlice';
+} from '../../redux/addExerciseSlice';
 
 function Formalization({ i, j, value, error, remove, update }) {
   return (

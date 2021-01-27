@@ -3,19 +3,19 @@ import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SyntaxError from './SyntaxError';
 import {
-  updateConstants,
-  selectConstantsParsed
-} from '../redux/newExerciseSlice';
+  updatePredicates,
+  selectPredicatesParsed
+} from '../../redux/addExerciseSlice';
 
-function Constants({ value, error, update }) {  
+function Predicates({ value, error, update }) {
   return (
     <Form.Group>
       <Form.Label>
-        Constants:
+        Predicates:
       </Form.Label>
       <Form.Control
         type="text"
-        placeholder="Enter constants"
+        placeholder="Enter predicates"
         value={value}
         onChange={(e) => update(e.target.value)}
       />
@@ -24,8 +24,8 @@ function Constants({ value, error, update }) {
   );
 }
 
-const mapStateToProps = selectConstantsParsed;
+const mapStateToProps = selectPredicatesParsed;
 
-const mapDispatchToProps = { update: updateConstants };
+const mapDispatchToProps = { update: updatePredicates };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Constants);
+export default connect(mapStateToProps, mapDispatchToProps)(Predicates);

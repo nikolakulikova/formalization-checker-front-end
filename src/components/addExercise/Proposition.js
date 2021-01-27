@@ -8,7 +8,7 @@ import {
   updateInformalValue,
   selectInformalValue,
   selectFormalizations
-} from '../redux/newExerciseSlice';
+} from '../../redux/addExerciseSlice';
 
 function Proposition({ i, value, formalizations, add, remove, update }) {
   const formalizations_list = formalizations.map((x, j) => (
@@ -28,15 +28,21 @@ function Proposition({ i, value, formalizations, add, remove, update }) {
           onChange={(e) => update(e.target.value, i)}
         />
         <Button
-          className="mt-1 float-right"
+          className="mt-1 mb-1 float-right"
           variant="outline-danger"
           size="sm"
           onClick={() => remove(i)}
         >
           Remove proposition
         </Button>
+        { value === "" ?
+          <Form.Text className="mb-3 text-danger">
+            This field cannot be empty
+          </Form.Text>
+          : null
+        }
       </Form.Group>
-      {formalizations_list}
+      { formalizations_list }
       <Button
         className="mt-1 mb-3 float-right"
         variant="primary"

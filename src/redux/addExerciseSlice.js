@@ -9,10 +9,25 @@ import {
   parseFunctions,
   parseFormulaWithPrecedence
 } from '@fmfi-uk-1-ain-412/js-fol-parser';
-import URL from '../serverURL';
+import { fetchData } from './fetchData';
 
-export const newExerciseSlice = createSlice({
-  name: 'newExercise',
+
+/* async actions */
+
+export const addNewExercise = createAsyncThunk(
+  'addExercise/addNewExercise',
+  async (exercise) => {
+    const response = await fetchData(
+      '/api/exercises', 'POST', exercise
+    );
+    return response;
+  }
+);
+
+
+/* slice */
+export const addExerciseSlice = createSlice({
+  name: 'addExercise',
   initialState: {
     title: '',
     constants: '',
@@ -93,7 +108,7 @@ export const {
   addNewFormalization,
   removeProposition,
   removeFormalization
-} = newExerciseSlice.actions;
+} = addExerciseSlice.actions;
 
 
 /* definition of helper functions used in selectors */
@@ -208,12 +223,12 @@ function parseFormalization(input, constants, predicates, functions, parser) {
 
 export const selectExerciseTitle = (state) => {
   return {
-    value: state.newExercise.title
+    value: state.addExercise.title
   };
 };
 
 export const selectConstantsParsed = createSelector(
-  [ state => state.newExercise.constants ],
+  [ state => state.addExercise.constants ],
   (value) => {
     let result = parseLanguageSubset(value, parseConstants);
     return {
@@ -225,7 +240,7 @@ export const selectConstantsParsed = createSelector(
 );
 
 export const selectPredicatesParsed = createSelector(
-  [ state => state.newExercise.predicates ],
+  [ state => state.addExercise.predicates ],
   (value) => {
     let result = parseLanguageSubset(value, parsePredicates);
     return {
@@ -237,7 +252,7 @@ export const selectPredicatesParsed = createSelector(
 );
 
 export const selectFunctionsParsed = createSelector(
-  [ state => state.newExercise.functions ],
+  [ state => state.addExercise.functions ],
   (value) => {
     let result = parseLanguageSubset(value, parseFunctions);
     return {
@@ -280,20 +295,20 @@ export const selectLanguage = createSelector(
 );
 
 export const selectPropositions = (state) => {
-  return state.newExercise.propositions;
+  return state.addExercise.propositions;
 };
 
 export const selectFormalizations = (state, i) => {
-  return state.newExercise.propositions[i].formalizations;
+  return state.addExercise.propositions[i].formalizations;
 };
 
 export const selectInformalValue = (state, i) => {
-  return state.newExercise.propositions[i].proposition;
+  return state.addExercise.propositions[i].proposition;
 };
 
 export const selectFormalization = createSelector(
   [
-    (state, i, j) => state.newExercise.propositions[i].formalizations[j],
+    (state, i, j) => state.addExercise.propositions[i].formalizations[j],
     (state, i, j) => selectLanguage(state)
   ],
   (value, language) => {
@@ -306,14 +321,8 @@ export const selectFormalization = createSelector(
 );
 
 export const selectExercise = (state) => {
-  if (state.newExercise.title === "") {
-    return {
-      containsErrors: true
-    };
-  }
-
   let language = selectLanguage(state);
-  if (language.errorMessage) {
+  if (language.errorMessage || selectExerciseTitle(state).value === "") {
     return {
       containsErrors: true
     };
@@ -321,6 +330,11 @@ export const selectExercise = (state) => {
 
   let propositions = selectPropositions(state);
   for (let i = 0; i < propositions.length; i++) {
+    if (propositions[i].proposition === "") {
+      return {
+        containsErrors: true
+      };
+    }
     let formalizations = propositions[i].formalizations;
     for (let j = 0; j < formalizations.length; j++) {
       let formalization = selectFormalization(state, i, j);
@@ -333,33 +347,14 @@ export const selectExercise = (state) => {
   }
   
   return {
-    title: state.newExercise.title,
-    constants: state.newExercise.constants,
-    predicates: state.newExercise.predicates,
-    functions: state.newExercise.functions,
-    propositions: state.newExercise.propositions,
+    title: state.addExercise.title,
+    constants: state.addExercise.constants,
+    predicates: state.addExercise.predicates,
+    functions: state.addExercise.functions,
+    propositions: state.addExercise.propositions,
     containsErrors: false
   };
 };
 
 
-/* async actions */
-
-export const addNewExercise = createAsyncThunk(
-  'newExercise/addNewExercise',
-  async (exercise) => {
-    try {
-      const response = await fetch(URL + "/api/exercises", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(exercise)
-      });
-      console.log(response);
-    } catch (err) {
-      console.error(err.stack);
-    }
-  }
-);
-
-
-export default newExerciseSlice.reducer;
+export default addExerciseSlice.reducer;

@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import newExerciseReducer from './newExerciseSlice';
+import addExerciseReducer from './addExerciseSlice';
+import solveExerciseReducer from './solveExerciseSlice';
 
 export default configureStore({
   reducer: {
-    newExercise: newExerciseReducer
+    addExercise: addExerciseReducer,
+    solveExercise: solveExerciseReducer
   }
 });

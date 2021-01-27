@@ -5,7 +5,7 @@ import Proposition from './Proposition';
 import {
   addNewProposition,
   selectPropositions
-} from '../redux/newExerciseSlice';
+} from '../../redux/addExerciseSlice';
 
 function PropositionsSection({ propositions, add }) {
   const propositions_list = propositions.map((x, i) => (
@@ -15,7 +15,7 @@ function PropositionsSection({ propositions, add }) {
   return (
     <div className="mt-3 mb-4 clearfix">
       <h4>Propositions</h4>
-      {propositions_list}
+      { propositions_list }
       <Button
         className="mt-2 float-right"
         variant="primary"
