@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { ListGroup, Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  selectAllExercises,
-  selectStatus,
-  selectError,
   fetchAllExercises,
-  chooseExercise
-} from '../../redux/solveExerciseSlice';
+  selectExercises,
+  selectStatus,
+  selectError
+} from '../../redux/exercisesSlice';
 
-function ExerciseList({ exercises, status, error, fetchAllExercises, chooseExercise }) {
+function ExerciseList({ exercises, status, error, fetchAllExercises }) {
   useEffect(() => {
     if (status === 'idle') {
       fetchAllExercises();
@@ -21,12 +21,11 @@ function ExerciseList({ exercises, status, error, fetchAllExercises, chooseExerc
     content = <Spinner animation="border" variant="primary" />;
   } else if (status === 'succeeded') {
     let exercises_list = exercises.map((x) => (
-      <ListGroup.Item key={x.exercise_id}
-        action variant="primary" className="mt-1 mb-1"
-        onClick={() => chooseExercise(x.exercise_id)}
-      >
-        {x.title}
-      </ListGroup.Item>
+      <Link to={`/solve/${x.exercise_id}`} key={x.exercise_id}>
+        <ListGroup.Item action variant="primary">
+          {x.title}
+        </ListGroup.Item>
+      </Link>
     ));
     content = <ListGroup>{ exercises_list }</ListGroup>;
   } else if (status === 'failed') {
@@ -43,12 +42,12 @@ function ExerciseList({ exercises, status, error, fetchAllExercises, chooseExerc
 
 const mapStateToProps = (state) => {
   return {
-    exercises: selectAllExercises(state),
+    exercises: selectExercises(state),
     status: selectStatus(state),
     error: selectError(state),
   };
 };
 
-const mapDispatchToProps = { fetchAllExercises, chooseExercise };
+const mapDispatchToProps = { fetchAllExercises };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExerciseList);

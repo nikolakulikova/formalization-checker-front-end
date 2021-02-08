@@ -7,16 +7,6 @@ import { fetchData } from './fetchData';
 
 /* async actions */
 
-export const fetchAllExercises = createAsyncThunk(
-  'solveExercise/fetchAllExercises',
-  async () => {
-    const response = await fetchData(
-      '/api/exercises', 'GET', null
-    );
-    return response;
-  }
-);
-
 export const fetchExercise = createAsyncThunk(
   'solveExercise/fetchExercise',
   async (exercise_id) => {
@@ -32,38 +22,18 @@ export const fetchExercise = createAsyncThunk(
 export const solveExerciseSlice = createSlice({
   name: 'solveExercise',
   initialState: {
-    exercises: [],
+    exercise: null,
     status: 'idle',
     error: null,
-    selectedExerciseID: null,
-    selectedExercise: null
   },
-  reducers: {
-    chooseExercise: (state, action) => {
-      state.selectedExerciseID = action.payload;
-      state.status = 'idle';
-      state.error = null;
-    }
-  },
+  reducers: {},
   extraReducers: {
-    [fetchAllExercises.pending]: (state, action) => {
-      state.status = 'loading';
-    },
-    [fetchAllExercises.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      state.exercises = state.exercises.concat(action.payload);
-    },
-    [fetchAllExercises.rejected]: (state, action) => {
-      state.status = 'failed';
-      state.error = action.payload;
-    },
-
     [fetchExercise.pending]: (state, action) => {
       state.status = 'loading';
     },
     [fetchExercise.fulfilled]: (state, action) => {
       state.status = 'succeeded';
-      state.selectedExercise = action.payload;
+      state.exercise = action.payload;
     },
     [fetchExercise.rejected]: (state, action) => {
       state.status = 'failed';
@@ -74,15 +44,13 @@ export const solveExerciseSlice = createSlice({
 
 
 /* export actions */
-export const {
-  chooseExercise
-} = solveExerciseSlice.actions;
+//export const {} = solveExerciseSlice.actions;
 
 
 /* selectors */
 
-export const selectAllExercises = (state) => {
-  return state.solveExercise.exercises;
+export const selectExercise = (state) => {
+  return state.solveExercise.exercise;
 };
 
 export const selectStatus = (state) => {
@@ -91,14 +59,6 @@ export const selectStatus = (state) => {
 
 export const selectError = (state) => {
   return state.solveExercise.error;
-};
-
-export const selectExerciseID = (state) => {
-  return state.solveExercise.selectedExerciseID;
-};
-
-export const selectExercise = (state) => {
-  return state.solveExercise.selectedExercise;
 };
 
 
