@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import Solution from './Solution';
 import {
   selectExercise,
   selectStatus,
@@ -22,13 +23,20 @@ function SolveExercise({ match, exercise, status, error, fetchExercise }) {
     content = <Spinner animation="border" variant="primary" />;
   } else if (status === 'succeeded') {
     const propositions_list = exercise.propositions.map((x) => (
-      <p key={x.proposition_id}>{ x.proposition }</p>
+      <Solution
+        key={x.proposition_id}
+        id={x.proposition_id}
+        proposition={x.proposition}
+      />
     ));
     content = (
       <div>
         <h2>{ exercise.title }</h2>
+        <h6>Constants</h6>
         <p>{ exercise.constants }</p>
+        <h6>Predicates</h6>
         <p>{ exercise.predicates }</p>
+        <h6>Functions</h6>
         <p>{ exercise.functions }</p>
         { propositions_list }
       </div>
@@ -40,6 +48,14 @@ function SolveExercise({ match, exercise, status, error, fetchExercise }) {
   return (
     <div>
       { content }
+      <Button
+        className="mt-1 float-right"
+        variant="primary"
+        size="lg"
+        onClick={() => {}}
+      >
+        Check
+      </Button>
     </div>
   );
 }

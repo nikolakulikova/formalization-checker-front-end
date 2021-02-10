@@ -10,6 +10,11 @@ import {
   parseFormulaWithPrecedence
 } from '@fmfi-uk-1-ain-412/js-fol-parser';
 import { fetchData } from './fetchData';
+import {
+  arrayToArityMap,
+  parseLanguageSubset,
+  parseFormalization
+} from './helpers';
 
 
 /* async actions */
@@ -143,79 +148,6 @@ function checkForClashes(constants, predicates, functions) {
   }
 
   return null;
-}
-
-function arrayToArityMap(symbols) {
-  let arityMap = new Map();
-  for (let x of symbols) {
-    if (!arityMap.has(x.name)) {
-      arityMap.set(x.name, x.arity);
-    }
-  }
-  return arityMap;
-}
-
-function parseLanguageSubset(input, parser) {
-  try {
-    let result = parser(input);
-    return {
-      array: result,
-      error: null
-    };
-  } catch (error) {
-    return {
-      array: [],
-      error: error
-    };
-  }
-}
-
-function checkArity(symbol, args, arityMap, {expected}) {
-  const a = arityMap.get(symbol);
-  if (args.length !== a) {
-    expected(`${a} argument${(a === 1 ? '' : 's')} to ${symbol}`);
-  }
-}
-
-function parseFormalization(input, constants, predicates, functions, parser) {
-  const nonLogicalSymbols = new Set([
-    ...constants,
-    ...predicates.keys(),
-    ...functions.keys()
-  ]);
-
-  const language = {
-    isConstant: (x) => constants.has(x),
-    isPredicate: (x) => predicates.has(x),
-    isFunction: (x) => functions.has(x),
-    isVariable: (x) => !nonLogicalSymbols.has(x)
-  };
-
-  const factories = {
-    variable: () => null,
-    constant: () => null,
-    functionApplication: (symbol, args, ee) => {
-      checkArity(symbol, args, functions, ee);
-    },
-    predicateAtom: (symbol, args, ee) => {
-      checkArity(symbol, args, predicates, ee);
-    },
-    equalityAtom: () => null,
-    negation: () => null,
-    conjunction: () => null,
-    disjunction: () => null,
-    implication: () => null,
-    equivalence: () => null,
-    existentialQuant: () => null,
-    universalQuant: () => null
-  };
-
-  try {
-    parser(input, language, factories);
-    return null;
-  } catch (error) {
-    return error;
-  }
 }
 
 
