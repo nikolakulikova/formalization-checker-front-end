@@ -35,6 +35,7 @@ export const addExerciseSlice = createSlice({
   name: 'addExercise',
   initialState: {
     title: '',
+    description: '',
     constants: '',
     predicates: '',
     functions: '',
@@ -46,6 +47,9 @@ export const addExerciseSlice = createSlice({
   reducers: {
     updateExerciseTitle: (state, action) => {
       state.title = action.payload;
+    },
+    updateDescription: (state, action) => {
+      state.description = action.payload;
     },
     updateConstants: (state, action) => {
       state.constants = action.payload;
@@ -104,6 +108,7 @@ export const addExerciseSlice = createSlice({
 /* export actions */
 export const {
   updateExerciseTitle,
+  updateDescription,
   updateConstants,
   updatePredicates,
   updateFunctions,
@@ -156,6 +161,12 @@ function checkForClashes(constants, predicates, functions) {
 export const selectExerciseTitle = (state) => {
   return {
     value: state.addExercise.title
+  };
+};
+
+export const selectDescription = (state) => {
+  return {
+    value: state.addExercise.description
   };
 };
 
@@ -280,6 +291,7 @@ export const selectExercise = (state) => {
   
   return {
     title: state.addExercise.title,
+    description: state.addExercise.description,
     constants: state.addExercise.constants,
     predicates: state.addExercise.predicates,
     functions: state.addExercise.functions,

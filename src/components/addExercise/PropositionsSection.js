@@ -13,7 +13,7 @@ function PropositionsSection({ propositions, add }) {
   ));
 
   return (
-    <div className="mt-3 mb-4 clearfix">
+    <div className="mt-4 mb-4 clearfix">
       <h4>Propositions</h4>
       { propositions_list }
       <Button

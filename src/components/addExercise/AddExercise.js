@@ -5,12 +5,14 @@ import { addNewExercise, selectExercise } from '../../redux/addExerciseSlice';
 import LanguageSection from './LanguageSection';
 import PropositionsSection from './PropositionsSection';
 import ExerciseTitle from './ExerciseTitle';
+import Description from './Description';
 
 function AddExercise({ exercise, containsErrors, addExercise }) {
   return (
     <Form>
       <h2>New exercise</h2>
       <ExerciseTitle />
+      <Description />
       <LanguageSection />
       <PropositionsSection />
       <Button
@@ -28,6 +30,7 @@ function AddExercise({ exercise, containsErrors, addExercise }) {
 
 const mapStateToProps = (state) => {
   let exercise = selectExercise(state);
+  console.log(exercise);
   if (exercise.containsErrors) {
     return {
       exercise: null,

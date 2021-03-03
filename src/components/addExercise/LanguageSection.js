@@ -6,7 +6,7 @@ import Clashes from './Clashes';
 
 function LanguageSection() {
   return (
-    <div className="mt-3 mb-4">
+    <div className="mt-4 mb-4">
       <h4>Language</h4>
       <Constants />
       <Predicates />
