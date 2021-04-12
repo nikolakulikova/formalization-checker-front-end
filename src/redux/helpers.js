@@ -50,9 +50,11 @@ export const parseFormalization = (input, constants, predicates, functions, pars
     constant: () => null,
     functionApplication: (symbol, args, ee) => {
       checkArity(symbol, args, functions, ee);
+      return null;
     },
     predicateAtom: (symbol, args, ee) => {
       checkArity(symbol, args, predicates, ee);
+      return null;
     },
     equalityAtom: () => null,
     negation: () => null,

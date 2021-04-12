@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Spinner, Button } from 'react-bootstrap';
+import { Spinner, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Solution from './Solution';
 import {
@@ -10,13 +10,13 @@ import {
 } from '../../redux/solveExerciseSlice';
 
 function SolveExercise({ match, exercise, status, error, fetchExercise }) {
-  const { id } = match.params;
+  let { id } = match.params;
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (status === 'idle' || (exercise && exercise.exercise_id !== parseInt(id))) {
       fetchExercise(id);
     }
-  }, [status, id, fetchExercise]);
+  }, [status, id, exercise, fetchExercise]);
 
   let content = null;
   if (status === 'loading') {
@@ -25,39 +25,32 @@ function SolveExercise({ match, exercise, status, error, fetchExercise }) {
     const propositions_list = exercise.propositions.map((x) => (
       <Solution
         key={x.proposition_id}
-        id={x.proposition_id}
+        exercise_id={id}
+        proposition_id={x.proposition_id}
         proposition={x.proposition}
       />
     ));
     content = (
       <div>
         <h2>{ exercise.title }</h2>
-        <h6>Constants</h6>
+        <h5>Constants</h5>
         <p>{ exercise.constants }</p>
-        <h6>Predicates</h6>
+        <h5>Predicates</h5>
         <p>{ exercise.predicates }</p>
-        <h6>Functions</h6>
+        <h5>Functions</h5>
         <p>{ exercise.functions }</p>
         { propositions_list }
       </div>
     );
   } else if (status === 'failed') {
-    content = <div>{error}</div>
+    content = (
+      <Alert variant="danger">
+        {error}
+      </Alert>
+    );
   }
 
-  return (
-    <div>
-      { content }
-      <Button
-        className="mt-1 float-right"
-        variant="primary"
-        size="lg"
-        onClick={() => {}}
-      >
-        Check
-      </Button>
-    </div>
-  );
+  return content;
 }
 
 const mapStateToProps = (state) => {

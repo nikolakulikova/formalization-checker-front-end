@@ -21,29 +21,43 @@ import {
 
 export const addNewExercise = createAsyncThunk(
   'addExercise/addNewExercise',
-  async (exercise) => {
-    const response = await fetchData(
-      '/api/exercises', 'POST', exercise
-    );
-    return response;
+  async (_, { getState, rejectWithValue }) => {
+    let exercise = selectExercise(getState());
+    if (!exercise) {
+      return rejectWithValue("Exercise contains errors.");
+    }
+    try {
+      let response = await fetchData(
+        '/api/exercises', 'POST', exercise
+      );
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
   }
 );
 
 
+/* initial state */
+const initialState = {
+  title: '',
+  description: '',
+  constants: '',
+  predicates: '',
+  functions: '',
+  propositions: [{
+    proposition: '',
+    formalizations: ['']
+  }],
+
+  status: 'idle',
+  error: null
+}
+
 /* slice */
 export const addExerciseSlice = createSlice({
   name: 'addExercise',
-  initialState: {
-    title: '',
-    description: '',
-    constants: '',
-    predicates: '',
-    functions: '',
-    propositions: [{
-      proposition: '',
-      formalizations: ['']
-    }]
-  },
+  initialState,
   reducers: {
     updateExerciseTitle: (state, action) => {
       state.title = action.payload;
@@ -100,6 +114,18 @@ export const addExerciseSlice = createSlice({
       prepare: (i, j) => {
         return { payload: { i, j } };
       }
+    }
+  },
+  extraReducers: {
+    [addNewExercise.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [addNewExercise.fulfilled]: (state, action) => {
+      state.status = 'succeeded';
+    },
+    [addNewExercise.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload;
     }
   }
 });
@@ -263,28 +289,22 @@ export const selectFormalization = createSelector(
   }
 );
 
-export const selectExercise = (state) => {
+const selectExercise = (state) => {
   let language = selectLanguage(state);
   if (language.errorMessage || selectExerciseTitle(state).value === "") {
-    return {
-      containsErrors: true
-    };
+    return null;
   }
 
   let propositions = selectPropositions(state);
   for (let i = 0; i < propositions.length; i++) {
     if (propositions[i].proposition === "") {
-      return {
-        containsErrors: true
-      };
+      return null;
     }
     let formalizations = propositions[i].formalizations;
     for (let j = 0; j < formalizations.length; j++) {
       let formalization = selectFormalization(state, i, j);
       if (formalization.error) {
-        return {
-          containsErrors: true
-        };
+        return null;
       }
     }
   }
@@ -296,8 +316,12 @@ export const selectExercise = (state) => {
     predicates: state.addExercise.predicates,
     functions: state.addExercise.functions,
     propositions: state.addExercise.propositions,
-    containsErrors: false
   };
+};
+
+export const checkExercise = (state) => {
+  let exercise = selectExercise(state);
+  return !exercise;
 };
 
 

@@ -1,45 +1,62 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addNewExercise, selectExercise } from '../../redux/addExerciseSlice';
+import {
+  addNewExercise,
+  checkExercise,
+  selectExerciseTitle
+} from '../../redux/addExerciseSlice';
 import LanguageSection from './LanguageSection';
 import PropositionsSection from './PropositionsSection';
 import ExerciseTitle from './ExerciseTitle';
 import Description from './Description';
 
-function AddExercise({ exercise, containsErrors, addExercise }) {
-  return (
-    <Form>
-      <h2>New exercise</h2>
-      <ExerciseTitle />
-      <Description />
-      <LanguageSection />
-      <PropositionsSection />
-      <Button
-        className="mt-4 mb-5 float-right clearfix"
-        variant="primary"
-        size="lg"
-        disabled={containsErrors}
-        onClick={() => addExercise(exercise)}
-      >
-        Save exercise
-      </Button>
-    </Form>
-  );
+function AddExercise({ status, error, containsErrors, title, addExercise }) {
+  let content = null;
+  if (status === 'idle') {
+    content = (
+      <Form>
+        <h2>Add exercise</h2>
+        <ExerciseTitle />
+        <Description />
+        <LanguageSection />
+        <PropositionsSection />
+        <Button
+          className="mt-4 mb-5 float-right clearfix"
+          variant="primary"
+          size="lg"
+          disabled={containsErrors}
+          onClick={addExercise}
+        >
+          Save exercise
+        </Button>
+      </Form>
+    );
+  } else if (status === 'loading') {
+    content = <Spinner animation="border" variant="primary" />;
+  } else if (status === 'succeeded') {
+    content = (
+      <Alert variant="success">
+        Exercise <b>{ title }</b> was succefully added to the database.
+      </Alert>
+    );
+  } else if (status === 'failed') {
+    content = (
+      <Alert variant="danger">
+        { error }
+      </Alert>
+    );
+  }
+
+  return content;
 }
 
 const mapStateToProps = (state) => {
-  let exercise = selectExercise(state);
-  console.log(exercise);
-  if (exercise.containsErrors) {
-    return {
-      exercise: null,
-      containsErrors: true
-    };
-  }
   return {
-    exercise: exercise,
-    containsErrors: false
+    status: state.addExercise.status,
+    error: state.addExercise.error,
+    containsErrors: checkExercise(state),
+    title: selectExerciseTitle(state).value
   };
 };
 

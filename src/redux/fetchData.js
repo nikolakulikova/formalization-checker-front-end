@@ -10,15 +10,11 @@ export const fetchData = async (route, method, body) => {
     config.body = JSON.stringify(body)
   }
 
-  let data;
-  try {
-    const response = await fetch(serverURL + route, config);
-    data = await response.json();
-    if (response.ok) {
-      return data;
-    }
-    throw new Error(response.statusText)
-  } catch (err) {
-    return Promise.reject(err.message ? err.message : data);
+  let response = await fetch(serverURL + route, config);
+
+  if (response.ok) {
+    return response.json();
   }
+  
+  throw new Error(response.status + " " + response.statusText);
 }

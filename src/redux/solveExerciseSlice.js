@@ -19,11 +19,36 @@ import {
 
 export const fetchExercise = createAsyncThunk(
   'solveExercise/fetchExercise',
-  async (exercise_id) => {
-    const response = await fetchData(
-      `/api/exercises/${exercise_id}`, 'GET', null
-    );
-    return response;
+  async (exercise_id, { rejectWithValue }) => {
+    try {
+      let response = await fetchData(
+        `/api/exercises/${exercise_id}`, 'GET', null
+      );
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const evaluate = createAsyncThunk(
+  'solveExercise/evaluate',
+  async (exercise_id, proposition_id, solution, { rejectWithValue }) => {
+    try {
+      let response = await fetchData(
+        `/api/exercises/${exercise_id}/${proposition_id}`, 'GET',
+        { solution }
+      );
+      return {
+        evaluation: response,
+        proposition_id
+      };
+    } catch (err) {
+      return {
+        error: rejectWithValue(err.message),
+        proposition_id
+      };
+    }
   }
 );
 
@@ -33,18 +58,20 @@ export const solveExerciseSlice = createSlice({
   name: 'solveExercise',
   initialState: {
     exercise: null,
+    status: 'idle',
+    error: null,
+
     constants: [],
     predicates: [],
     functions: [],
-    solutions: [],
-    status: 'idle',
-    error: null,
+
+    solutions: {}
   },
   reducers: {
     update: {
       reducer: (state, action) => {
         const { value, id } = action.payload;
-        state.solutions.find(x => x.proposition_id === id).formalization = value;
+        state.solutions[id].solution = value;
       },
       prepare: (value, id) => {
         return { payload: { value, id } };
@@ -61,16 +88,37 @@ export const solveExerciseSlice = createSlice({
       state.constants = parseConstants(state.exercise.constants);
       state.predicates = parsePredicates(state.exercise.predicates);
       state.functions = parseFunctions(state.exercise.functions);
+      state.solutions = {};
       for (let p of state.exercise.propositions) {
-        state.solutions.push({
-          proposition_id: p.proposition_id,
-          formalization: ''
-        });
+        state.solutions[p.proposition_id] = {
+          solution: '',
+          evaluation: null,
+
+          status: 'idle',
+          error: null
+        };
       }
+      state.error = null;
     },
     [fetchExercise.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.payload;
+    },
+
+    [evaluate.pending]: (state, action) => {
+      console.log(action.payload);
+    },
+    [evaluate.fulfilled]: (state, action) => {
+      let { evaluation, proposition_id } = action.payload;
+      let solution = state.solutions[proposition_id];
+      solution.status = 'succeeded';
+      solution.evaluation = evaluation;
+    },
+    [evaluate.rejected]: (state, action) => {
+      let { error, proposition_id } = action.payload;
+      let solution = state.solutions[proposition_id];
+      solution.status = 'failed';
+      solution.error = error;
     }
   }
 });
@@ -89,9 +137,7 @@ export const selectExercise = (state) => {
 };
 
 export const selectFormalization = (state, id) => {
-  const value = state.solveExercise.solutions.find(
-    x => x.proposition_id === id
-  ).formalization;
+  const value = state.solveExercise.solutions[id].solution;
 
   let error = parseFormalization(
     value, new Set(state.solveExercise.constants),
@@ -109,6 +155,18 @@ export const selectStatus = (state) => {
 
 export const selectError = (state) => {
   return state.solveExercise.error;
+};
+
+export const selectEvaluation = (state, id) => {
+  return state.solveExercise.solutions[id].evaluation;
+};
+
+export const selectEvalStatus = (state, id) => {
+  return state.solveExercise.solutions[id].status;
+};
+
+export const selectEvalError = (state, id) => {
+  return state.solveExercise.solutions[id].error;
 };
 
 
