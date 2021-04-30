@@ -16,8 +16,8 @@ function App() {
         <Container className="mt-3 mb-3">
           <Switch>
             <Route exact path="/" component={ExerciseList} />
-            <Route path="/add" component={AddExercise} />
             <Route path="/solve/:id" component={SolveExercise} />
+            <Route path="/add" component={AddExercise} />
           </Switch>
         </Container>
       </div>

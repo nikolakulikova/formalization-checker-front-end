@@ -1,6 +1,6 @@
 const serverURL = "http://localhost:5000";
 
-export const fetchData = async (route, method, body) => {
+export const fetchData = async (route, method, body = undefined) => {
   const config = {
     method: method,
     headers: { "Content-Type": "application/json" }

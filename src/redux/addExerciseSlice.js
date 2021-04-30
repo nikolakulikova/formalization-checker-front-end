@@ -38,26 +38,23 @@ export const addNewExercise = createAsyncThunk(
 );
 
 
-/* initial state */
-const initialState = {
-  title: '',
-  description: '',
-  constants: '',
-  predicates: '',
-  functions: '',
-  propositions: [{
-    proposition: '',
-    formalizations: ['']
-  }],
-
-  status: 'idle',
-  error: null
-}
-
 /* slice */
 export const addExerciseSlice = createSlice({
   name: 'addExercise',
-  initialState,
+  initialState: {
+    title: '',
+    description: '',
+    constants: '',
+    predicates: '',
+    functions: '',
+    propositions: [{
+      proposition: '',
+      formalizations: ['']
+    }],
+
+    status: 'idle',
+    error: null
+  },
   reducers: {
     updateExerciseTitle: (state, action) => {
       state.title = action.payload;
@@ -114,7 +111,7 @@ export const addExerciseSlice = createSlice({
       prepare: (i, j) => {
         return { payload: { i, j } };
       }
-    }
+    },
   },
   extraReducers: {
     [addNewExercise.pending]: (state, action) => {

@@ -33,11 +33,11 @@ function SolveExercise({ match, exercise, status, error, fetchExercise }) {
     content = (
       <div>
         <h2>{ exercise.title }</h2>
-        <h5>Constants</h5>
+        <h5 className="mt-4">Constants</h5>
         <p>{ exercise.constants }</p>
-        <h5>Predicates</h5>
+        <h5 className="mt-4">Predicates</h5>
         <p>{ exercise.predicates }</p>
-        <h5>Functions</h5>
+        <h5 className="mt-4">Functions</h5>
         <p>{ exercise.functions }</p>
         { propositions_list }
       </div>

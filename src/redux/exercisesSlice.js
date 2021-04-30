@@ -11,7 +11,7 @@ export const fetchAllExercises = createAsyncThunk(
   'exercises/fetchAllExercises',
   async (_, { rejectWithValue }) => {
     try {
-      let response = await fetchData('/api/exercises', 'GET', null);
+      let response = await fetchData('/api/exercises', 'GET');
       return response;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -26,7 +26,7 @@ export const exercisesSlice = createSlice({
   initialState: {
     exercises: [],
     status: 'idle',
-    error: null,
+    error: null
   },
   reducers: {},
   extraReducers: {

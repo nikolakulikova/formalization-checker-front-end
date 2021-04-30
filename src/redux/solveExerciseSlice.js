@@ -22,7 +22,7 @@ export const fetchExercise = createAsyncThunk(
   async (exercise_id, { rejectWithValue }) => {
     try {
       let response = await fetchData(
-        `/api/exercises/${exercise_id}`, 'GET', null
+        `/api/exercises/${exercise_id}`, 'GET'
       );
       return response;
     } catch (err) {
@@ -33,21 +33,15 @@ export const fetchExercise = createAsyncThunk(
 
 export const evaluate = createAsyncThunk(
   'solveExercise/evaluate',
-  async (exercise_id, proposition_id, solution, { rejectWithValue }) => {
+  async ({ exercise_id, proposition_id, solution }, { rejectWithValue }) => {
     try {
       let response = await fetchData(
-        `/api/exercises/${exercise_id}/${proposition_id}`, 'GET',
+        `/api/exercises/${exercise_id}/${proposition_id}`, 'POST',
         { solution }
       );
-      return {
-        evaluation: response,
-        proposition_id
-      };
+      return response;
     } catch (err) {
-      return {
-        error: rejectWithValue(err.message),
-        proposition_id
-      };
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -76,7 +70,7 @@ export const solveExerciseSlice = createSlice({
       prepare: (value, id) => {
         return { payload: { value, id } };
       }
-    }
+    },
   },
   extraReducers: {
     [fetchExercise.pending]: (state, action) => {
@@ -88,7 +82,6 @@ export const solveExerciseSlice = createSlice({
       state.constants = parseConstants(state.exercise.constants);
       state.predicates = parsePredicates(state.exercise.predicates);
       state.functions = parseFunctions(state.exercise.functions);
-      state.solutions = {};
       for (let p of state.exercise.propositions) {
         state.solutions[p.proposition_id] = {
           solution: '',
@@ -98,7 +91,6 @@ export const solveExerciseSlice = createSlice({
           error: null
         };
       }
-      state.error = null;
     },
     [fetchExercise.rejected]: (state, action) => {
       state.status = 'failed';
@@ -106,16 +98,20 @@ export const solveExerciseSlice = createSlice({
     },
 
     [evaluate.pending]: (state, action) => {
-      console.log(action.payload);
+      let { proposition_id } = action.meta.arg;
+      let solution = state.solutions[proposition_id];
+      solution.status = 'loading';
     },
     [evaluate.fulfilled]: (state, action) => {
-      let { evaluation, proposition_id } = action.payload;
+      let { proposition_id } = action.meta.arg;
+      let evaluation = action.payload;
       let solution = state.solutions[proposition_id];
       solution.status = 'succeeded';
       solution.evaluation = evaluation;
     },
     [evaluate.rejected]: (state, action) => {
-      let { error, proposition_id } = action.payload;
+      let { proposition_id } = action.meta.arg;
+      let { error } = action.payload;
       let solution = state.solutions[proposition_id];
       solution.status = 'failed';
       solution.error = error;
@@ -136,7 +132,7 @@ export const selectExercise = (state) => {
   return state.solveExercise.exercise;
 };
 
-export const selectFormalization = (state, id) => {
+export const selectSolution = (state, id) => {
   const value = state.solveExercise.solutions[id].solution;
 
   let error = parseFormalization(

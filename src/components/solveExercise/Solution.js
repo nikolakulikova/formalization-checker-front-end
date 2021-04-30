@@ -6,13 +6,13 @@ import Evaluation from './Evaluation';
 import {
   update,
   evaluate,
-  selectFormalization
+  selectSolution
 } from '../../redux/solveExerciseSlice';
 
 function Solution({ exercise_id, proposition_id, proposition,
                     value, error, update, evaluate }) {
   return (
-    <div>
+    <div className="clearfix mt-4">
       <Form.Group className="clearfix">
         <Form.Label>
           { proposition }
@@ -27,7 +27,11 @@ function Solution({ exercise_id, proposition_id, proposition,
           className="mt-1 float-right"
           variant="primary"
           disabled={error}
-          onClick={() => { evaluate(exercise_id, proposition_id, value) }}
+          onClick={() => evaluate({
+            exercise_id,
+            proposition_id,
+            solution: value
+          })}
         >
           Check
         </Button>
@@ -39,7 +43,7 @@ function Solution({ exercise_id, proposition_id, proposition,
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return selectFormalization(state, ownProps.proposition_id);
+  return selectSolution(state, ownProps.proposition_id);
 };
 
 const mapDispatchToProps = { update, evaluate };
