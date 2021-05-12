@@ -7,6 +7,7 @@ import {
   selectEvalError
 } from '../../redux/solveExerciseSlice';
 
+
 function Evaluation({ evaluation, status, error }) {
   let content = null;
   if (status === 'loading') {

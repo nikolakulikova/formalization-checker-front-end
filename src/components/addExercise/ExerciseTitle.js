@@ -6,6 +6,7 @@ import {
   selectExerciseTitle
 } from '../../redux/addExerciseSlice';
 
+
 function ExerciseTitle({ value, update }) {  
   return (
     <Form.Group>

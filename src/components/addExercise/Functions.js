@@ -7,6 +7,7 @@ import {
   selectFunctionsParsed
 } from '../../redux/addExerciseSlice';
 
+
 function Functions({ value, error, update }) {
   return (
     <Form.Group>

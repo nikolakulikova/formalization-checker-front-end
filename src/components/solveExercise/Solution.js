@@ -9,6 +9,7 @@ import {
   selectSolution
 } from '../../redux/solveExerciseSlice';
 
+
 function Solution({ exercise_id, proposition_id, proposition,
                     value, error, update, evaluate }) {
   return (

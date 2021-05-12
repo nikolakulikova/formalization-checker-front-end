@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
+
 function SyntaxError({ value, error }) {
   if (!error) {
     return null;

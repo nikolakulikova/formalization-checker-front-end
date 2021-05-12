@@ -1,4 +1,5 @@
-const serverURL = "http://localhost:5000";
+import { BACKEND_URL } from '../config';
+
 
 export const fetchData = async (route, method, body = undefined) => {
   const config = {
@@ -10,7 +11,7 @@ export const fetchData = async (route, method, body = undefined) => {
     config.body = JSON.stringify(body)
   }
 
-  let response = await fetch(serverURL + route, config);
+  let response = await fetch(BACKEND_URL + route, config);
 
   if (response.ok) {
     return response.json();

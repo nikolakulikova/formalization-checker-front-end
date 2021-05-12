@@ -7,6 +7,7 @@ import {
   selectPropositions
 } from '../../redux/addExerciseSlice';
 
+
 function PropositionsSection({ propositions, add }) {
   const propositions_list = propositions.map((x, i) => (
     <Proposition key={i} i={i} />

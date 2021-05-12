@@ -7,6 +7,7 @@ import {
   selectConstantsParsed
 } from '../../redux/addExerciseSlice';
 
+
 function Constants({ value, error, update }) {  
   return (
     <Form.Group>

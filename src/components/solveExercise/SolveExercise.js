@@ -9,11 +9,12 @@ import {
   fetchExercise
 } from '../../redux/solveExerciseSlice';
 
+
 function SolveExercise({ match, exercise, status, error, fetchExercise }) {
   let { id } = match.params;
 
   useEffect(() => {
-    if (status === 'idle' || (exercise && exercise.exercise_id !== parseInt(id))) {
+    if (status === 'idle') {
       fetchExercise(id);
     }
   }, [status, id, exercise, fetchExercise]);
@@ -39,6 +40,8 @@ function SolveExercise({ match, exercise, status, error, fetchExercise }) {
         <p>{ exercise.predicates }</p>
         <h5 className="mt-4">Functions</h5>
         <p>{ exercise.functions }</p>
+        <h5 className="mt-4">Description</h5>
+        <p>{ exercise.description }</p>
         { propositions_list }
       </div>
     );

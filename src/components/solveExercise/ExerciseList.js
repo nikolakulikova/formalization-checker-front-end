@@ -8,8 +8,12 @@ import {
   selectStatus,
   selectError
 } from '../../redux/exercisesSlice';
+import {
+  fetchExercise
+} from '../../redux/solveExerciseSlice';
 
-function ExerciseList({ exercises, status, error, fetchAllExercises }) {
+
+function ExerciseList({ exercises, status, error, fetchAllExercises, fetchExercise }) {
   useEffect(() => {
     if (status === 'idle') {
       fetchAllExercises();
@@ -21,11 +25,13 @@ function ExerciseList({ exercises, status, error, fetchAllExercises }) {
     content = <Spinner animation="border" variant="primary" />;
   } else if (status === 'succeeded') {
     let exercises_list = exercises.map((x) => (
-      <Link to={`/solve/${x.exercise_id}`} key={x.exercise_id}>
-        <ListGroup.Item action variant="primary">
-          { x.title }
-        </ListGroup.Item>
-      </Link>
+      <ListGroup.Item
+        as={Link} to={`/solve/${x.exercise_id}`} key={x.exercise_id}
+        variant="primary" action
+        onClick={() => fetchExercise(x.exercise_id)}
+      >
+        { x.title }
+      </ListGroup.Item>
     ));
     content = <ListGroup>{ exercises_list }</ListGroup>;
   } else if (status === 'failed') {
@@ -52,6 +58,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = { fetchAllExercises };
+const mapDispatchToProps = { fetchAllExercises, fetchExercise };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExerciseList);

@@ -4,6 +4,7 @@ import {
   selectLanguage
 } from '../../redux/addExerciseSlice';
 
+
 function Clashes({ errorMessage }) {
   return errorMessage ? (
     <p className="text-danger">

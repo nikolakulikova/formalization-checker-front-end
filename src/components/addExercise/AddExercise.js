@@ -11,6 +11,7 @@ import PropositionsSection from './PropositionsSection';
 import ExerciseTitle from './ExerciseTitle';
 import Description from './Description';
 
+
 function AddExercise({ status, error, containsErrors, title, addExercise }) {
   let content = null;
   if (status === 'idle') {

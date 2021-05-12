@@ -10,6 +10,7 @@ import {
   selectFormalizations
 } from '../../redux/addExerciseSlice';
 
+
 function Proposition({ i, value, formalizations, add, remove, update }) {
   const formalizations_list = formalizations.map((x, j) => (
     <Formalization key={j} i={i} j={j} />

@@ -7,6 +7,7 @@ import {
   selectPredicatesParsed
 } from '../../redux/addExerciseSlice';
 
+
 function Predicates({ value, error, update }) {
   return (
     <Form.Group>

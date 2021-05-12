@@ -8,6 +8,7 @@ import {
   selectFormalization
 } from '../../redux/addExerciseSlice';
 
+
 function Formalization({ i, j, value, error, remove, update }) {
   return (
     <div className="clearfix pl-5">

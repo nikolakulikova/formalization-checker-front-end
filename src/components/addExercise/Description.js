@@ -6,6 +6,7 @@ import {
   selectDescription
 } from '../../redux/addExerciseSlice';
 
+
 function Description({ value, update }) {  
   return (
     <Form.Group>

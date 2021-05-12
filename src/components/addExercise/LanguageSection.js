@@ -4,6 +4,7 @@ import Predicates from './Predicates';
 import Functions from './Functions';
 import Clashes from './Clashes';
 
+
 function LanguageSection() {
   return (
     <div className="mt-4 mb-4">
