@@ -60,7 +60,7 @@ function App({ isLoggedIn, user, logOut }) {
             <ProtectedRoute exact path="/add" component={AddExercise} />
 
             <Route path="*" component={() => {
-              <Alert variant="danger">404 Not Found</Alert>
+              return <Alert variant="danger">404 Not Found</Alert>
             }} />
           </Switch>
         </Container>
