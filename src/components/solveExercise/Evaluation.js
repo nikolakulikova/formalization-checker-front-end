@@ -45,7 +45,8 @@ const getMessage = (evaluation) => {
           </Alert>
         );
   } else if (evaluation.solutionToFormalization === 'TE'
-      || evaluation.formalizationToSolution === 'TE') {
+      || evaluation.formalizationToSolution === 'TE' || evaluation.solutionToFormalization === 'ME'
+      || evaluation.formalizationToSolution === 'ME') {
         return (
           <Alert variant="warning">
             Dokazovaču sa nepodarilo zistiť,
@@ -61,6 +62,11 @@ const getMessage = (evaluation) => {
             <br />Vieme nájsť konkrétnu štruktúru,
             v ktorej je hľadaná správna formalizácia pravdivá,
             ale vaša formalizácia je nepravdivá.
+              <pre>
+               {evaluation.domain}
+               {evaluation.predicates}
+              </pre>
+
           </Alert>
         );
   } else if (evaluation.solutionToFormalization === 'WA'
@@ -71,15 +77,27 @@ const getMessage = (evaluation) => {
             <br />Vieme nájsť konkrétnu štruktúru,
             v ktorej je vaša formalizácia pravdivá,
             ale hľadaná správna formalizácia je nepravdivá.
+              <pre>
+               {evaluation.domain}
+               {evaluation.predicates}
+              </pre>
           </Alert>
-        );
+
+
+  );
   } else {
     return (
       <Alert variant="danger">
         <b>Riešenie je nesprávne.</b>
         <br />Vieme nájsť konkrétne štruktúry,
         v ktorých je vaša formalizácia pravdivá,
-        ale hľadaná správna formalizácia je nepravdivá, a naopak.
+        ale hľadaná správna formalizácia je nepravdivá, a naopak. :)
+
+          <pre>
+               {evaluation.domain}
+              {evaluation.predicates}
+          </pre>
+
       </Alert>
     );
   }
