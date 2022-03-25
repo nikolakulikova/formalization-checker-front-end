@@ -2,7 +2,9 @@ import {
   createSlice,
   createAsyncThunk
 } from '@reduxjs/toolkit';
+import {fetchData} from "./fetchData";
 //import { fetchData } from './fetchData';
+
 
 
 /* async actions */
@@ -10,13 +12,17 @@ import {
 export const logIn = createAsyncThunk(
   'user/logIn',
   async ({ username, password }, { rejectWithValue }) => {
-    if (username === 'abcd' && password === 'abcd') {
-      return {
-        username,
-        jwtToken: username + ' OK'
-      };
-    } else {
-      return null;
+    try {
+      let data = {};
+      data["username"] = username;
+      data["password"] = password;
+      let response = await fetchData(
+          `/api/exercises/logIN`, 'POST', data
+      );
+    return response;
+    } catch (err) {
+      console.error(err)
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -65,8 +71,9 @@ export const userSlice = createSlice({
       }
     },
     [logIn.rejected]: (state, action) => {
+
+      state.error = state.status;
       state.status = 'failed';
-      state.error = action.payload;
     }
   }
 });
