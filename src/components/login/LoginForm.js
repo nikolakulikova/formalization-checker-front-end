@@ -3,7 +3,7 @@ import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  updateUsername, updatePassword, logIn
+  updateUsername, updatePassword, logIn, logInByGithub
 } from '../../redux/userSlice';
 
 
@@ -16,9 +16,7 @@ function LoginForm({
     return <Spinner animation="border" variant="primary" />;
   }
 
-  if (status === 'failed') {
-    return <Alert variant="danger">{ error }</Alert>;
-  }
+
 
   if (isLoggedIn) {
     if (location.state && location.state.from && location.state.from.pathname) {
@@ -27,6 +25,7 @@ function LoginForm({
       return <Redirect to="/" />
     }
   } else {
+
     return (
       <Form>
         <Form.Group>
@@ -62,6 +61,15 @@ function LoginForm({
           }}
         >
           Log in
+        </Button>
+        <Button
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            logInByGithub();
+          }}
+        >
+          Log in by Github
         </Button>
       </Form>
     );

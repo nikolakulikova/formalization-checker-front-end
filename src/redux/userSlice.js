@@ -26,6 +26,20 @@ export const logIn = createAsyncThunk(
     }
   }
 );
+export const logInByGithub = createAsyncThunk(
+  'user/logInByGithub',
+  async ( _, { rejectWithValue }) => {
+    try {
+      let response = await fetchData(
+          `/api/exercises/logInGithub`, 'GET',
+      );
+    return response;
+    } catch (err) {
+      console.error(err)
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 
 /* slice */
@@ -67,13 +81,12 @@ export const userSlice = createSlice({
         state.user = action.payload;
         state.isLoggedIn = true;
       } else {
-        state.error = 'No such combination of username and password found.';
+        state.error = '';
       }
     },
     [logIn.rejected]: (state, action) => {
-
-      state.error = state.status;
       state.status = 'failed';
+      state.error = 'No such combination of username and password found.';
     }
   }
 });
