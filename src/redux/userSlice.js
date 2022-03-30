@@ -3,7 +3,7 @@ import {
   createAsyncThunk
 } from '@reduxjs/toolkit';
 import {fetchData} from "./fetchData";
-//import { fetchData } from './fetchData';
+
 
 
 
@@ -17,7 +17,7 @@ export const logIn = createAsyncThunk(
       data["username"] = username;
       data["password"] = password;
       let response = await fetchData(
-          `/api/exercises/logIN`, 'POST', data
+          `/api/exercises/logIn`, 'POST', data
       );
     return response;
     } catch (err) {
@@ -27,15 +27,17 @@ export const logIn = createAsyncThunk(
   }
 );
 export const logInByGithub = createAsyncThunk(
-  'user/logInByGithub',
-  async ( _, { rejectWithValue }) => {
+  'user/logInGithub',
+  async ( {code},  { rejectWithValue }) => {
     try {
+      let data = {};
+      data["code"] = code;
       let response = await fetchData(
-          `/api/exercises/logInGithub`, 'GET',
+          `/api/exercises/logIn/github/auth`, 'POST', data
       );
-    return response;
+      return response;
     } catch (err) {
-      console.error(err)
+      console.error(err.message)
       return rejectWithValue(err.message);
     }
   }
@@ -47,6 +49,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     isLoggedIn: false,
+    isAdmin: false,
     user: null,
     
     status: 'idle',
@@ -67,7 +70,7 @@ export const userSlice = createSlice({
       state.user = null;
       state.status = 'idle';
       state.error = '';
-    }
+    },
   },
   extraReducers: {
     [logIn.pending]: (state, action) => {
@@ -80,6 +83,7 @@ export const userSlice = createSlice({
       if (action.payload) {
         state.user = action.payload;
         state.isLoggedIn = true;
+        state.isAdmin = true;
       } else {
         state.error = '';
       }
@@ -87,7 +91,26 @@ export const userSlice = createSlice({
     [logIn.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = 'No such combination of username and password found.';
-    }
+    } ,
+    [logInByGithub.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [logInByGithub.fulfilled]: (state, action) => {
+      state.status = 'succeeded';
+      state.usernameValue = '';
+      state.passwordValue = '';
+      if (action.payload) {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+        state.isAdmin = false;
+      } else {
+        state.error = '';
+      }
+    },
+    [logInByGithub.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = 'No such combination of username and password found.';
+    } ,
   }
 });
 
