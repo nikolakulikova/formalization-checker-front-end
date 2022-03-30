@@ -11,7 +11,7 @@ import {
 
 
 function Solution({ exercise_id, proposition_id, proposition,
-                    value, error, update , evaluate, user_id}) {
+                    value, error, update , evaluate, user}) {
   return (
     <div className="clearfix mt-4">
       <Form.Group className="clearfix">
@@ -32,7 +32,7 @@ function Solution({ exercise_id, proposition_id, proposition,
             exercise_id,
             proposition_id,
             solution: value,
-              user_id: 1
+              user: user
           })}
         >
           Check
