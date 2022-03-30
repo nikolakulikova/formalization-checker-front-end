@@ -33,11 +33,11 @@ export const fetchExercise = createAsyncThunk(
 
 export const evaluate = createAsyncThunk(
   'solveExercise/evaluate',
-  async ({ exercise_id, proposition_id, solution, user_id }, { rejectWithValue }) => {
+  async ({ exercise_id, proposition_id, solution, user }, { rejectWithValue }) => {
     try {
       let response = await fetchData(
         `/api/exercises/${exercise_id}/${proposition_id}`, 'POST',
-        { solution, user_id }
+        { solution, user}
       );
       return response;
     } catch (err) {
