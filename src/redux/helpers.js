@@ -73,3 +73,61 @@ export const parseFormalization = (input, constants, predicates, functions, pars
     return error;
   }
 }
+
+export function getStringDomainAndPredicates(symbols, constants, language){
+  let d = "𝒟 = {";
+  let i = "";
+  let poc = 0;
+  if(symbols === ''){
+    return ['',''];
+  }
+  for (let [key, value] of Object.entries(constants)){
+    if(language.includes(key)) {
+      i += "𝑖(" + key + ") = " + value + "\n";
+    }
+    if( value <= poc){
+      continue;
+    }
+    d += value + ", ";
+    poc++;
+  }
+  i += "\n";
+  d = d.slice(0, d.length -2 );
+  d += "}\n";
+
+  i += stringForPredicateAndFunctions(symbols);
+  return [d, i];
+}
+
+function stringForPredicateAndFunctions(name){
+  let p = "";
+  console.log(name);
+  for (let [key, value] of Object.entries(name)) {
+    p += "𝑖(" + key + ") = " + "{";
+    if (value[value.length - 1] === undefined) {
+      p += "}\n";
+      continue;
+    }
+    for (let j = 0; j < value.length - 1; j++) {
+      if (value[j] === undefined) {
+        continue;
+      }
+      if(value[j].length === 1){
+        p += value[j] + ", ";
+      }
+      else{
+        p += "(" + value[j] + "), ";
+      }
+
+    }
+    if(value[value.length - 1].length === 1){
+      p += value[value.length - 1] + "}\n";
+    }
+    else{
+      p += "(" +  value[value.length - 1] + ")}\n";
+    }
+
+  }
+
+  return p;
+}

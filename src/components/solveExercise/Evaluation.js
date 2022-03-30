@@ -6,6 +6,9 @@ import {
   selectEvalStatus,
   selectEvalError
 } from '../../redux/solveExerciseSlice';
+import {
+    getStringDomainAndPredicates,
+} from '../../redux/helpers';
 
 
 function Evaluation({ evaluation, status, error }) {
@@ -49,91 +52,104 @@ const getMessage = (evaluation) => {
       || evaluation.formalizationToSolution === 'ME') {
         return (
           <Alert variant="warning">
-            Dokazovaču sa nepodarilo zistiť,
+           <p> Dokazovaču sa nepodarilo zistiť,
             či je vaše riešenie správne alebo nesprávne.
-            <br />Na správnosť vášho riešenia sa spýtajte.
+               Na správnosť vášho riešenia sa spýtajte.</p>
           </Alert>
         );
-  } else if (evaluation.solutionToFormalization === 'OK'
-      && evaluation.formalizationToSolution === 'WA') {
-      if(evaluation.iFormalizationSolution !== 'null') {
-          return (
-              <Alert variant="danger">
-                  <b>Riešenie je nesprávne.</b>
-                  <br/>Vieme nájsť konkrétnu štruktúru,
-                  v ktorej je hľadaná správna formalizácia pravdivá,
-                  ale vaša formalizácia je nepravdivá.<br/>
+  } else {
+      let pom = getStringDomainAndPredicates(evaluation.symbolsFormalizationToSolution, evaluation.domainFormalizationToSolution,
+           evaluation.languageContants);
+      let domainFormToSol = pom[0];
+      let symbolsFormToSol = pom[1];
 
-                  {evaluation.m1}<br/>
-                  {evaluation.domainFormalizationSolution}<br/>
-                  {evaluation.iFormalizationSolution.split("\n").map((i,key) => {
-                      return <div key={key}>{i}</div>;
-                  })}
-                  <br/>
+      pom = getStringDomainAndPredicates(evaluation.symbolsSolutionToFormalization, evaluation.domainSolutionToFormalization,
+           evaluation.languageContants);
+      let domainSolToForm = pom[0];
+      let symbolsSolToForm = pom[1];
 
-
-              </Alert>
-          );
-      }
-      else{
-          return (
-              <Alert variant="danger">
-                  <b>Riešenie je nesprávne.</b>
-                  <br />Nepodarilo sa nájsť štruktúru, na vaše riešenie sa radšej opýtajte.
-
-              </Alert>
-          );
-      }
-  } else if (evaluation.solutionToFormalization === 'WA'
-      && evaluation.formalizationToSolution === 'OK' ) {
-          if(evaluation.iSolutionToFormalization !== 'null'){
-                return (
-                  <Alert variant="danger">
-                    <b>Riešenie je nesprávne.</b>
-                    <br />Vieme nájsť konkrétnu štruktúru,
-                    v ktorej je vaša formalizácia pravdivá,
-                    ale hľadaná správna formalizácia je nepravdivá.<br/>
-                       {evaluation.m2}<br/>
-                       {evaluation.domainSolutionToFormalization}<br/>
-                      {evaluation.iSolutionToFormalization.split("\n").map((i,key) => {
-                          return <div key={key}>{i}</div>;
-                      })}
-                      <br/>
-
-                  </Alert>
-          );
-        }
-          else {
+      if (evaluation.solutionToFormalization === 'OK'
+          && evaluation.formalizationToSolution === 'WA') {
+          if (evaluation.iFormalizationSolution !== 'null') {
               return (
                   <Alert variant="danger">
                       <b>Riešenie je nesprávne.</b>
-                      <br />Nepodarilo sa nájsť štruktúru, na vaše riešenie sa radšej opýtajte.
+                      <p>Vieme nájsť konkrétnu štruktúru,
+                          v ktorej je hľadaná správna formalizácia pravdivá,
+                          ale vaša formalizácia je nepravdivá.</p>
+
+                      <p>{evaluation.m1}</p>
+                      <p>{domainFormToSol}</p>
+                      {symbolsFormToSol.split("\n").map((i,key) => {
+                          return <div className="p" key={key}>{i}</div>;
+                      })}
+
+
+                      <br/>
+
+
+                  </Alert>
+              );
+          } else {
+              return (
+                  <Alert variant="danger">
+                      <b>Riešenie je nesprávne.</b>
+                      <p>Nepodarilo sa nájsť štruktúru, na vaše riešenie sa radšej opýtajte.</p>
+
                   </Alert>
               );
           }
-  } else {
+      } else if (evaluation.solutionToFormalization === 'WA'
+          && evaluation.formalizationToSolution === 'OK') {
+          if (evaluation.iSolutionToFormalization !== 'null') {
+              return (
+                  <Alert variant="danger">
+                      <b>Riešenie je nesprávne.</b>
+                      <p>Vieme nájsť konkrétnu štruktúru,
+                          v ktorej je vaša formalizácia pravdivá,
+                          ale hľadaná správna formalizácia je nepravdivá.</p>
+                      <p>{evaluation.m2}</p>
+                      <p>{domainSolToForm}</p>
+                      {symbolsSolToForm.split("\n").map((i,key) => {
+                          return <div className="p" key={key}>{i}</div>;
+                      })}
+
+                  </Alert>
+              );
+          } else {
+              return (
+                  <Alert variant="danger">
+                      <b>Riešenie je nesprávne.</b>
+                      <p>Nepodarilo sa nájsť štruktúru, na vaše riešenie sa radšej opýtajte.</p>
+                  </Alert>
+              );
+          }
+      } else {
           return (
               <Alert variant="danger">
                   <b>Riešenie je nesprávne.</b>
-                  <br/>Vieme nájsť konkrétne štruktúry,
-                  v ktorých je vaša formalizácia pravdivá,
-                  ale hľadaná správna formalizácia je nepravdivá, a naopak.<br/><br/>
+                  <p>Vieme nájsť konkrétne štruktúry,
+                      v ktorých je vaša formalizácia pravdivá,
+                      ale hľadaná správna formalizácia je nepravdivá, a naopak.</p>
 
-                          {evaluation.m2}<br/>
-                          {evaluation.domainSolutionToFormalization}<br/>
-                          {evaluation.iSolutionToFormalization.split("\n").map((i,key) => {
-                              return <div key={key}>{i}</div>;
-                          })}<br/>
+                  <p>{evaluation.m2}</p>
+                  <p>{domainSolToForm}</p>
+                  {symbolsSolToForm.split("\n").map((i,key) => {
+                      return <div className="p" key={key}>{i}</div>;
+                  })}
 
-                      {evaluation.m1}<br/>
-                      {evaluation.domainFormalizationToSolution}<br/>
-                      {evaluation.iFormalizationToSolution.split("\n").map((i,key) => {
-                          return <div key={key}>{i}</div>;
-                      })}
-                      <br/>
+
+                  <p>{evaluation.m1}</p>
+                  <p>{domainFormToSol}</p>
+                  {symbolsFormToSol.split("\n").map((i,key) => {
+                      return <div className="p" key={key}>{i}</div>;
+                  })}
 
 
               </Alert>
           );
       }
+
+  }
 };
+
