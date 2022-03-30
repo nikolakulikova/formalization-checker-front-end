@@ -12,6 +12,7 @@ import ExerciseList from './components/solveExercise/ExerciseList';
 import SolveExercise from './components/solveExercise/SolveExercise';
 import AddExercise from './components/addExercise/AddExercise';
 import { logOut } from './redux/userSlice';
+import AdminRoute from "./components/login/AdminRoute";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -53,11 +54,11 @@ function App({ isLoggedIn, user, logOut }) {
           </Navbar>
         <Container className="my-3">
           <Switch>
-            <Route exact path="/" component={ExerciseList} />
+            <ProtectedRoute exact path="/" component={ExerciseList} />
             <Route exact path="/login" component={LoginForm} />
-            <Route path="/solve/:id" component={SolveExercise} />
+            <ProtectedRoute path="/solve/:id" component={SolveExercise} />
 
-            <ProtectedRoute exact path="/add" component={AddExercise} />
+            <AdminRoute exact path="/add" component={AddExercise}  />
 
             <Route path="*" component={() => {
               return <Alert variant="danger">404 Not Found</Alert>
@@ -72,6 +73,7 @@ function App({ isLoggedIn, user, logOut }) {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
+    isAdmin: state.user.isAdmin,
     user: state.user.user
   };
 };
