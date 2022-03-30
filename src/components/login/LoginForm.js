@@ -9,14 +9,17 @@ import {
 
 function LoginForm({
   usernameValue, passwordValue, updateUsername, updatePassword,
-  location, isLoggedIn, status, error, logIn
+  location, isLoggedIn, status, error, logIn, logInByGithub
 }) {
 
   if (status === 'loading') {
     return <Spinner animation="border" variant="primary" />;
   }
-
-
+  if(window.location.href.match("code")){
+      let code = window.location.href.split("code=")[1];
+      logInByGithub({code: code});
+      return <Redirect to="/" />
+  }
 
   if (isLoggedIn) {
     if (location.state && location.state.from && location.state.from.pathname) {
@@ -66,7 +69,8 @@ function LoginForm({
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            logInByGithub();
+              let url = "https://github.com/login/oauth/authorize?client_id=88b09fefde66dd26cf3b&redirect_uri=http://localhost:3001/login&scope=read:user"
+              window.location.replace(url);
           }}
         >
           Log in by Github
@@ -86,6 +90,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = { updateUsername, updatePassword, logIn };
+const mapDispatchToProps = { updateUsername, updatePassword, logIn, logInByGithub };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
