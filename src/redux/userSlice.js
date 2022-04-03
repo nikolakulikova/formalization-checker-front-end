@@ -81,9 +81,11 @@ export const userSlice = createSlice({
       state.usernameValue = '';
       state.passwordValue = '';
       if (action.payload) {
-        state.user = action.payload;
+        document.cookie = "token=" + action.payload.token;
+        let data = JSON.parse(Buffer.from(action.payload.token.split(".")[1], "base64").toString());
+        state.user = {"username": data.username};
         state.isLoggedIn = true;
-        state.isAdmin = true;
+        state.isAdmin = data.isAdmin;
       } else {
         state.error = '';
       }
@@ -100,9 +102,11 @@ export const userSlice = createSlice({
       state.usernameValue = '';
       state.passwordValue = '';
       if (action.payload) {
-        state.user = action.payload;
+        document.cookie = "token=" + action.payload.token;
+        let data = JSON.parse(Buffer.from(action.payload.token.split(".")[1], "base64").toString());
+        state.user = {"username": data.username};
         state.isLoggedIn = true;
-        state.isAdmin = false;
+        state.isAdmin = data.isAdmin;
       } else {
         state.error = '';
       }
