@@ -6,7 +6,9 @@ export const fetchData = async (route, method, body = undefined) => {
     method: method,
     headers: { "Content-Type": "application/json" }
   }
-
+  if(document.cookie){
+    config.headers["token"] = document.cookie.replace("token=", "");
+  }
   if (body) {
     config.body = JSON.stringify(body)
   }

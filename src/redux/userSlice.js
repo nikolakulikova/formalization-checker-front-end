@@ -19,6 +19,7 @@ export const logIn = createAsyncThunk(
       let response = await fetchData(
           `/api/exercises/logIn`, 'POST', data
       );
+
     return response;
     } catch (err) {
       console.error(err)
@@ -66,6 +67,7 @@ export const userSlice = createSlice({
       state.passwordValue = action.payload;
     },
     logOut: (state) => {
+      document.cookie += "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
       state.isLoggedIn = false;
       state.user = null;
       state.status = 'idle';
