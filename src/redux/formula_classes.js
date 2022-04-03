@@ -41,9 +41,7 @@ class PredicateAtom {
     this.args = args;
   }
   getFreeVariable(used) {
-    console.log("preedikat");
     for (let i = 0; i < this.args.length; i++) {
-      console.log(this.args[i]);
       if(this.args[i].getFreeVariable(used)){
         return true;
       }
