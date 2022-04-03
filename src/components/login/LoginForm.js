@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   updateUsername, updatePassword, logIn, logInByGithub
 } from '../../redux/userSlice';
+import {CLIENT_ID, REDIRECT} from "../../config";
 
 
 function LoginForm({
@@ -69,7 +70,7 @@ function LoginForm({
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-              let url = "https://github.com/login/oauth/authorize?client_id=88b09fefde66dd26cf3b&redirect_uri=http://localhost:3001/login&scope=read:user"
+              let url = "https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT + "&scope=read:user"
               window.location.replace(url);
           }}
         >
