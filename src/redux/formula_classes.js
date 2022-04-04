@@ -4,8 +4,10 @@ class Variable {
     this.originalSymbol = originalSymbol;
   }
 
-  getFreeVariable(used){
-    return !(used.includes(this.originalSymbol ));
+  getFreeVariable(){
+    let res = new Set();
+    res.add(this.originalSymbol);
+    return  res;
 
   }
 }
@@ -15,8 +17,8 @@ class Constant {
     this.originalSymbol = originalSymbol;
   }
 
-  getFreeVariable(used){
-    return false;
+  getFreeVariable(){
+    return new Set();
   }
 }
 
@@ -25,13 +27,14 @@ class FunctionApplication {
     this.originalSymbol = originalSymbol;
     this.args = args;
   }
-  getFreeVariable(used){
+  getFreeVariable(){
+    let res = new Set();
     for(let i = 0; i < this.args.length; i++){
-      if(this.args[i].getFreeVariable(used)){
-        return true;
+      for(let element of this.args[i].getFreeVariable()){
+        res.add(element);
       }
     }
-    return false;
+    return res;
   }
 }
 
@@ -40,13 +43,14 @@ class PredicateAtom {
     this.originalSymbol = originalSymbol;
     this.args = args;
   }
-  getFreeVariable(used) {
+  getFreeVariable() {
+    let res = new Set();
     for (let i = 0; i < this.args.length; i++) {
-      if(this.args[i].getFreeVariable(used)){
-        return true;
+      for(let element of this.args[i].getFreeVariable()){
+        res.add(element);
       }
     }
-    return false;
+    return res;
   }
 }
 
@@ -55,12 +59,15 @@ class EqualityAtom {
     this.lhs = lhs;
     this.rhs = rhs;
   }
-  getFreeVariable(used) {
-    let pom = this.lhs.getFreeVariable(used);
-    if (pom) {
-      return pom;
+  getFreeVariable() {
+    let res = new Set();
+    for(let element of this.lhs.getFreeVariable()){
+      res.add(element);
     }
-    return this.rhs.getFreeVariable(used);
+    for(let element of this.rhs.getFreeVariable()){
+      res.add(element);
+    }
+    return res;
   }
 
 
@@ -71,8 +78,8 @@ class Negation {
     this.subf = subf;
   }
 
-  getFreeVariable(used){
-    return this.subf.getFreeVariable(used);
+  getFreeVariable(){
+    return this.subf.getFreeVariable();
   }
 }
 
@@ -82,12 +89,15 @@ class Conjunction {
     this.rhs = rhs;
   }
 
-  getFreeVariable(used) {
-    let pom = this.lhs.getFreeVariable(used);
-    if (pom) {
-      return pom;
+  getFreeVariable() {
+    let res = new Set();
+    for(let element of this.lhs.getFreeVariable()){
+      res.add(element);
     }
-    return this.rhs.getFreeVariable(used);
+    for(let element of this.rhs.getFreeVariable()){
+      res.add(element);
+    }
+    return res;
   }
 
 }
@@ -98,12 +108,15 @@ class Disjunction {
     this.rhs = rhs;
   }
 
-  getFreeVariable(used) {
-    let pom = this.lhs.getFreeVariable(used);
-    if (pom) {
-      return pom;
+  getFreeVariable() {
+    let res = new Set();
+    for(let element of this.lhs.getFreeVariable()){
+      res.add(element);
     }
-    return this.rhs.getFreeVariable(used);
+    for(let element of this.rhs.getFreeVariable()){
+      res.add(element);
+    }
+    return res;
   }
 }
 
@@ -113,12 +126,15 @@ class Implication {
     this.rhs = rhs;
   }
 
-  getFreeVariable(used) {
-    let pom = this.lhs.getFreeVariable(used);
-    if (pom) {
-      return pom;
+  getFreeVariable() {
+    let res = new Set();
+    for(let element of this.lhs.getFreeVariable()){
+      res.add(element);
     }
-    return this.rhs.getFreeVariable(used);
+    for(let element of this.rhs.getFreeVariable()){
+      res.add(element);
+    }
+    return res;
   }
 
 }
@@ -129,12 +145,15 @@ class Equivalence {
     this.rhs = rhs;
   }
 
-  getFreeVariable(used) {
-    let pom = this.lhs.getFreeVariable(used);
-    if (pom) {
-      return pom;
+  getFreeVariable() {
+    let res = new Set();
+    for(let element of this.lhs.getFreeVariable()){
+      res.add(element);
     }
-   return this.rhs.getFreeVariable(used);
+    for(let element of this.rhs.getFreeVariable()){
+      res.add(element);
+    }
+    return res;
   }
 }
 
@@ -143,13 +162,10 @@ class ExistentialQuant {
     this.originalSymbol = originalSymbol;
     this.subf = subf;
   }
-  getFreeVariable(used) {
-    let newArray = [];
-    for(let i = 0; i < used.length; i++){
-      newArray.push(used[i]);
-    }
-    newArray.push(this.originalSymbol);
-    return this.subf.getFreeVariable(newArray);
+  getFreeVariable() {
+    let res = this.subf.getFreeVariable()
+    res.delete(this.originalSymbol);
+    return res;
   }
 
 
@@ -160,13 +176,10 @@ class UniversalQuant {
     this.originalSymbol = originalSymbol;
     this.subf = subf;
   }
-  getFreeVariable(used) {
-    let newArray = [];
-    for(let i = 0; i < used.length; i++){
-      newArray.push(used[i]);
-    }
-    newArray.push(this.originalSymbol);
-    return this.subf.getFreeVariable(newArray);
+  getFreeVariable() {
+    let res = this.subf.getFreeVariable()
+    res.delete(this.originalSymbol);
+    return res;
   }
 
 }

@@ -77,18 +77,22 @@ export const parseFormalization = (input, constants, predicates, functions, pars
 
   try {
     let a = parser(input, language, factories);
-    if(a.getFreeVariable([])){
-      throw {"location" : {"start" : { "column": 1,
+    a = a.getFreeVariable();
+    if(a.size !== 0){
+      let res = "";
+      for(let element of a){
+        res += element + " ";
+      }
+      throw {"location" : {"start" : { "column": 0,
                                       "line": 0,
                                       "offset": 0
-
                                       },
-                          "end" : { "column": 1,
+                          "end" : { "column": 0,
                                     "line": 0,
                                     "offset": 0
                                   }
                            }  ,
-              "message" : "Expected  existential quantifier or universal quantifier but free variable found."};
+              "message" : "Expected  existential quantifier or universal quantifier but following free " + (a.size === 1? "variable " :  "variables ") + res +  "found."};
     }
     return null;
   } catch (error) {
