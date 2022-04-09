@@ -13,6 +13,10 @@ import SolveExercise from './components/solveExercise/SolveExercise';
 import AddExercise from './components/addExercise/AddExercise';
 import { logOut } from './redux/userSlice';
 import AdminRoute from "./components/login/AdminRoute";
+import Exercises from "./components/studentProgress/Exercises";
+import PropositionsToExercise from "./components/studentProgress/PropositionsToExercise";
+import UsersToProp from "./components/studentProgress/UsersToProp";
+import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -47,6 +51,9 @@ function App({ isLoggedIn, user, logOut }) {
             <Nav.Link className="px-4" as={Link} to="/add">
               Add
             </Nav.Link>
+            <Nav.Link className="px-4" as={Link} to="/progress">
+              Student progress
+            </Nav.Link>
           </Nav>
           <Nav>
             { loginInfo }
@@ -55,6 +62,10 @@ function App({ isLoggedIn, user, logOut }) {
         <Container className="my-3">
           <Switch>
             <ProtectedRoute exact path="/" component={ExerciseList} />
+            <ProtectedRoute exact path="/progress" component={Exercises} />
+            <ProtectedRoute exact path="/progress/exercise/proposition" component={PropositionsToExercise} />
+            <ProtectedRoute exact path="/progress/exercise/proposition/users" component={UsersToProp} />
+            <ProtectedRoute exact path="/progress/exercise/proposition/users/user" component={UserSolutionsList} />
             <Route exact path="/login" component={LoginForm} />
             <ProtectedRoute path="/solve/:id" component={SolveExercise} />
 
