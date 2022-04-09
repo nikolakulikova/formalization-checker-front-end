@@ -62,10 +62,10 @@ function App({ isLoggedIn, user, logOut }) {
         <Container className="my-3">
           <Switch>
             <ProtectedRoute exact path="/" component={ExerciseList} />
-            <ProtectedRoute exact path="/progress" component={Exercises} />
-            <ProtectedRoute exact path="/progress/exercise/proposition" component={PropositionsToExercise} />
-            <ProtectedRoute exact path="/progress/exercise/proposition/users" component={UsersToProp} />
-            <ProtectedRoute exact path="/progress/exercise/proposition/users/user" component={UserSolutionsList} />
+            <AdminRoute exact path="/progress" component={Exercises} />
+            <AdminRoute exact path="/progress/exercise/proposition" component={PropositionsToExercise} />
+            <AdminRoute exact path="/progress/exercise/proposition/users" component={UsersToProp} />
+            <AdminRoute exact path="/progress/exercise/proposition/users/user" component={UserSolutionsList} />
             <Route exact path="/login" component={LoginForm} />
             <ProtectedRoute path="/solve/:id" component={SolveExercise} />
 
