@@ -33,11 +33,11 @@ export const fetchExercise = createAsyncThunk(
 
 export const evaluate = createAsyncThunk(
   'solveExercise/evaluate',
-  async ({ exercise_id, proposition_id, solution, user }, { rejectWithValue }) => {
+  async ({ exercise_id, proposition_id, solution, helpSolution, user }, { rejectWithValue }) => {
     try {
       let response = await fetchData(
         `/api/exercises/${exercise_id}/${proposition_id}`, 'POST',
-        { solution, user}
+        { solution, helpSolution, user}
       );
       return response;
     } catch (err) {
@@ -71,6 +71,15 @@ export const solveExerciseSlice = createSlice({
         return { payload: { value, id } };
       }
     },
+    updateHelper: {
+      reducer: (state, action) => {
+        const { value, id } = action.payload;
+        state.solutions[id].helpSolution = value;
+      },
+      prepare: (value, id) => {
+        return { payload: { value, id } };
+      }
+    },
   },
   extraReducers: {
     [fetchExercise.pending]: (state, action) => {
@@ -88,7 +97,8 @@ export const solveExerciseSlice = createSlice({
           evaluation: null,
 
           status: 'idle',
-          error: null
+          error: null,
+          helpSolution: ""
         };
       }
     },
@@ -122,7 +132,7 @@ export const solveExerciseSlice = createSlice({
 
 /* export actions */
 export const {
-  update
+  update, updateHelper
 } = solveExerciseSlice.actions;
 
 
@@ -134,15 +144,23 @@ export const selectExercise = (state) => {
 
 export const selectSolution = (state, id) => {
   const value = state.solveExercise.solutions[id].solution;
-
   let error = parseFormalization(
     value, new Set(state.solveExercise.constants),
     arrayToArityMap(state.solveExercise.predicates),
     arrayToArityMap(state.solveExercise.functions),
     parseFormulaWithPrecedence
   );
-
-  return { value, error };
+  const value2 = state.solveExercise.solutions[id].helpSolution;
+  if(value2 === ""){
+    return {value, error, value2}
+  }
+  let error2 = parseFormalization(
+    value2, new Set(state.solveExercise.constants),
+    arrayToArityMap(state.solveExercise.predicates),
+    arrayToArityMap(state.solveExercise.functions),
+    parseFormulaWithPrecedence
+  );
+  return { value, error, value2, error2 };
 };
 
 export const selectStatus = (state) => {
