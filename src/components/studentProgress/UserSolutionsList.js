@@ -37,7 +37,6 @@ function UsersSolutionList({ solutions, users, status, error, fetchUsersSolution
               </Alert>
 
     ));
-    console.log(solution);
     let s = [];
     let date = null;
     for(let i = 0; i < solutions.length; i++){
@@ -66,7 +65,6 @@ function UsersSolutionList({ solutions, users, status, error, fetchUsersSolution
   } else if (status === 'failed') {
     content = (
       <Alert variant="danger">
-        ahoj
         {error}
       </Alert>
     );
