@@ -37,8 +37,31 @@ function UsersSolutionList({ solutions, users, status, error, fetchUsersSolution
               </Alert>
 
     ));
+    console.log(solution);
+    let s = [];
+    let date = null;
+    for(let i = 0; i < solutions.length; i++){
+
+      if(date !== solutions[i].date.split("T")[0]){
+
+        date = solutions[i].date.split("T")[0];
+        s.push(<h4 className="mb-4"> {date}</h4>)
+      }
+      if(solutions[i].is_correct){
+        s.push(<Alert variant="success" key={solutions[i].date}>
+          {solutions[i].date.split("T")[1].split(".")[0] + " "}
+          {solutions[i].solution}
+        </Alert>)
+      }
+      else{
+        s.push(<Alert variant="danger" key={solutions[i].date}>
+          {solutions[i].date.split("T")[1].split(".")[0] + " "}
+          {solutions[i].solution}
+        </Alert>)
+      }
+    }
     content = (
-        <ListGroup>{ solution }</ListGroup>
+        <ListGroup>{ s }</ListGroup>
     );
   } else if (status === 'failed') {
     content = (
