@@ -9,6 +9,7 @@ class BinaryFormula {
     return addAll(a, this.rhs.getFreeVariables())
   }
 }
+
 class QuantifiedFormula {
   constructor(originalSymbol, subf) {
     this.originalSymbol = originalSymbol;
@@ -69,10 +70,6 @@ class PredicateAtom {
 }
 
 class EqualityAtom extends BinaryFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(lhs, rhs) {
-    super(lhs, rhs)
-  }
 }
 
 class Negation {
@@ -86,45 +83,21 @@ class Negation {
 }
 
 class Conjunction extends BinaryFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(lhs, rhs) {
-    super(lhs, rhs);
-  }
 }
 
 class Disjunction extends BinaryFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(lhs, rhs) {
-    super(lhs, rhs)
-  }
 }
 
 class Implication extends BinaryFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(lhs, rhs) {
-    super(lhs, rhs)
-  }
 }
 
 class Equivalence extends BinaryFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(lhs, rhs) {
-    super(lhs, rhs)
-  }
 }
 
 class ExistentialQuant extends QuantifiedFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(originalSymbol, subf) {
-    super(originalSymbol, subf)
-  }
 }
 
 class UniversalQuant extends QuantifiedFormula{
-  // eslint-disable-next-line no-useless-constructor
-  constructor(originalSymbol, subf) {
-    super(originalSymbol, subf)
-  }
 }
 
 function addAll(a, b) {
