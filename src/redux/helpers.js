@@ -77,7 +77,7 @@ export const parseFormalization = (input, constants, predicates, functions, pars
 
   try {
     let a = parser(input, language, factories);
-    a = a.getFreeVariable();
+    a = a.getFreeVariables();
     if(a.size !== 0){
       let res = "";
       for(let element of a){

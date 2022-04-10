@@ -1,13 +1,33 @@
+class BinaryFormula {
+  constructor(lhs, rhs) {
+    this.lhs = lhs;
+    this.rhs = rhs;
+  }
+
+  getFreeVariables() {
+    let a = addAll(new Set(), this.lhs.getFreeVariables());
+    return addAll(a, this.rhs.getFreeVariables())
+  }
+}
+class QuantifiedFormula {
+  constructor(originalSymbol, subf) {
+    this.originalSymbol = originalSymbol;
+    this.subf = subf;
+  }
+  getFreeVariables() {
+    const res = this.subf.getFreeVariables()
+    res.delete(this.originalSymbol);
+    return res;
+  }
+}
 
 class Variable {
   constructor(originalSymbol) {
     this.originalSymbol = originalSymbol;
   }
 
-  getFreeVariable(){
-    let res = new Set();
-    res.add(this.originalSymbol);
-    return  res;
+  getFreeVariables(){
+    return new Set([this.originalSymbol]);
 
   }
 }
@@ -17,7 +37,7 @@ class Constant {
     this.originalSymbol = originalSymbol;
   }
 
-  getFreeVariable(){
+  getFreeVariables(){
     return new Set();
   }
 }
@@ -27,14 +47,11 @@ class FunctionApplication {
     this.originalSymbol = originalSymbol;
     this.args = args;
   }
-  getFreeVariable(){
-    let res = new Set();
-    for(let i = 0; i < this.args.length; i++){
-      for(let element of this.args[i].getFreeVariable()){
-        res.add(element);
-      }
-    }
-    return res;
+  getFreeVariables(){
+    return this.args.reduce(
+        (fvs, arg) => addAll(fvs, arg.getFreeVariables()),
+        new Set()
+    );
   }
 }
 
@@ -43,34 +60,19 @@ class PredicateAtom {
     this.originalSymbol = originalSymbol;
     this.args = args;
   }
-  getFreeVariable() {
-    let res = new Set();
-    for (let i = 0; i < this.args.length; i++) {
-      for(let element of this.args[i].getFreeVariable()){
-        res.add(element);
-      }
-    }
-    return res;
+  getFreeVariables() {
+    return this.args.reduce(
+        (fvs, arg) => addAll(fvs, arg.getFreeVariables()),
+        new Set()
+    );
   }
 }
 
-class EqualityAtom {
+class EqualityAtom extends BinaryFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(lhs, rhs) {
-    this.lhs = lhs;
-    this.rhs = rhs;
+    super(lhs, rhs)
   }
-  getFreeVariable() {
-    let res = new Set();
-    for(let element of this.lhs.getFreeVariable()){
-      res.add(element);
-    }
-    for(let element of this.rhs.getFreeVariable()){
-      res.add(element);
-    }
-    return res;
-  }
-
-
 }
 
 class Negation {
@@ -78,110 +80,56 @@ class Negation {
     this.subf = subf;
   }
 
-  getFreeVariable(){
-    return this.subf.getFreeVariable();
+  getFreeVariables(){
+    return this.subf.getFreeVariables();
   }
 }
 
-class Conjunction {
+class Conjunction extends BinaryFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(lhs, rhs) {
-    this.lhs = lhs;
-    this.rhs = rhs;
+    super(lhs, rhs);
   }
-
-  getFreeVariable() {
-    let res = new Set();
-    for(let element of this.lhs.getFreeVariable()){
-      res.add(element);
-    }
-    for(let element of this.rhs.getFreeVariable()){
-      res.add(element);
-    }
-    return res;
-  }
-
 }
 
-class Disjunction {
+class Disjunction extends BinaryFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(lhs, rhs) {
-    this.lhs = lhs;
-    this.rhs = rhs;
-  }
-
-  getFreeVariable() {
-    let res = new Set();
-    for(let element of this.lhs.getFreeVariable()){
-      res.add(element);
-    }
-    for(let element of this.rhs.getFreeVariable()){
-      res.add(element);
-    }
-    return res;
+    super(lhs, rhs)
   }
 }
 
-class Implication {
+class Implication extends BinaryFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(lhs, rhs) {
-    this.lhs = lhs;
-    this.rhs = rhs;
+    super(lhs, rhs)
   }
-
-  getFreeVariable() {
-    let res = new Set();
-    for(let element of this.lhs.getFreeVariable()){
-      res.add(element);
-    }
-    for(let element of this.rhs.getFreeVariable()){
-      res.add(element);
-    }
-    return res;
-  }
-
 }
 
-class Equivalence {
+class Equivalence extends BinaryFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(lhs, rhs) {
-    this.lhs = lhs;
-    this.rhs = rhs;
-  }
-
-  getFreeVariable() {
-    let res = new Set();
-    for(let element of this.lhs.getFreeVariable()){
-      res.add(element);
-    }
-    for(let element of this.rhs.getFreeVariable()){
-      res.add(element);
-    }
-    return res;
+    super(lhs, rhs)
   }
 }
 
-class ExistentialQuant {
+class ExistentialQuant extends QuantifiedFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(originalSymbol, subf) {
-    this.originalSymbol = originalSymbol;
-    this.subf = subf;
+    super(originalSymbol, subf)
   }
-  getFreeVariable() {
-    let res = this.subf.getFreeVariable()
-    res.delete(this.originalSymbol);
-    return res;
-  }
-
-
 }
 
-class UniversalQuant {
+class UniversalQuant extends QuantifiedFormula{
+  // eslint-disable-next-line no-useless-constructor
   constructor(originalSymbol, subf) {
-    this.originalSymbol = originalSymbol;
-    this.subf = subf;
+    super(originalSymbol, subf)
   }
-  getFreeVariable() {
-    let res = this.subf.getFreeVariable()
-    res.delete(this.originalSymbol);
-    return res;
-  }
+}
 
+function addAll(a, b) {
+  b.forEach((elem) => a.add(elem));
+  return a;
 }
 
 module.exports = {
