@@ -67,7 +67,7 @@ export const userSlice = createSlice({
       state.passwordValue = action.payload;
     },
     logOut: (state) => {
-      document.cookie += "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      localStorage.removeItem("token");
       state.isLoggedIn = false;
       state.user = null;
       state.status = 'idle';
@@ -83,11 +83,11 @@ export const userSlice = createSlice({
       state.usernameValue = '';
       state.passwordValue = '';
       if (action.payload) {
-        document.cookie = "token=" + action.payload.token;
         let data = JSON.parse(Buffer.from(action.payload.token.split(".")[1], "base64").toString());
         state.user = {"username": data.username};
         state.isLoggedIn = true;
         state.isAdmin = data.isAdmin;
+        localStorage["token"] = action.payload.token
       } else {
         state.error = '';
       }
@@ -104,11 +104,12 @@ export const userSlice = createSlice({
       state.usernameValue = '';
       state.passwordValue = '';
       if (action.payload) {
-        document.cookie = "token=" + action.payload.token;
         let data = JSON.parse(Buffer.from(action.payload.token.split(".")[1], "base64").toString());
         state.user = {"username": data.username};
         state.isLoggedIn = true;
         state.isAdmin = data.isAdmin;
+        localStorage["token"] = action.payload.token
+        console.log(localStorage);
       } else {
         state.error = '';
       }
