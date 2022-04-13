@@ -354,6 +354,10 @@ const selectExercise = (state) => {
       if (formalization.error) {
         return null;
       }
+      let constraint = selectConstraints(state, i, j);
+      if (constraint.error) {
+        return null;
+      }
     }
   }
   
