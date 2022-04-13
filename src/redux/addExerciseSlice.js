@@ -47,9 +47,11 @@ export const addExerciseSlice = createSlice({
     constants: '',
     predicates: '',
     functions: '',
+    constraint: '',
     propositions: [{
       proposition: '',
-      formalizations: ['']
+      formalizations: [''],
+      constraints: ['']
     }],
 
     status: 'idle',
@@ -70,6 +72,9 @@ export const addExerciseSlice = createSlice({
     },
     updateFunctions: (state, action) => {
       state.functions = action.payload;
+    },
+    updateConstraint: (state, action) => {
+      state.constraint = action.payload;
     },
     updateInformalValue: {
       reducer: (state, action) => {
@@ -92,12 +97,14 @@ export const addExerciseSlice = createSlice({
     addNewProposition: (state) => {
       state.propositions.push({
         proposition: '',
-        formalizations: ['']
+        formalizations: [''],
+        constraints: ['']
       });
     },
     addNewFormalization: (state, action) => {
       const i = action.payload;
       state.propositions[i].formalizations.push('');
+      state.propositions[i].constraints.push('');
     },
     removeProposition: (state, action) => {
       const i = action.payload;
@@ -107,9 +114,19 @@ export const addExerciseSlice = createSlice({
       reducer: (state, action) => {
         const { i, j } = action.payload;
         state.propositions[i].formalizations.splice(j, 1);
+        state.propositions[i].constraints.splice(j, 1);
       },
       prepare: (i, j) => {
         return { payload: { i, j } };
+      }
+    },
+    updateConstraints: {
+      reducer: (state, action) => {
+        const { value, i, j } = action.payload;
+        state.propositions[i].constraints[j] = value;
+      },
+      prepare: (value, i, j) => {
+        return { payload: { value, i, j} };
       }
     },
   },
@@ -140,7 +157,9 @@ export const {
   addNewProposition,
   addNewFormalization,
   removeProposition,
-  removeFormalization
+  removeFormalization,
+  updateConstraints,
+  updateConstraint
 } = addExerciseSlice.actions;
 
 
@@ -285,6 +304,38 @@ export const selectFormalization = createSelector(
     return { value, error };
   }
 );
+export const selectConstraints = createSelector(
+  [
+    (state, i, j) => state.addExercise.propositions[i].constraints[j],
+    (state, i, j) => selectLanguage(state)
+  ],
+  (value, language) => {
+    if(value === ''){
+      return { value, error: ""};
+    }
+    let error = parseFormalization(
+      value, language.constants, language.predicates,
+      language.functions, parseFormulaWithPrecedence
+    );
+    return { value, error };
+  }
+);
+export const selectConstraint = createSelector(
+  [
+    (state) => state.addExercise.constraint,
+    (state) => selectLanguage(state)
+  ],
+  (value, language) => {
+    if(value === ''){
+      return { value, error: ""};
+    }
+    let error = parseFormalization(
+      value, language.constants, language.predicates,
+      language.functions, parseFormulaWithPrecedence
+    );
+    return { value, error };
+  }
+);
 
 const selectExercise = (state) => {
   let language = selectLanguage(state);
@@ -312,6 +363,7 @@ const selectExercise = (state) => {
     constants: state.addExercise.constants,
     predicates: state.addExercise.predicates,
     functions: state.addExercise.functions,
+    constraint: state.addExercise.constraint,
     propositions: state.addExercise.propositions,
   };
 };
