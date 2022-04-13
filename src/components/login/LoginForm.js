@@ -74,7 +74,7 @@ function LoginForm({
               window.location.replace(url);
           }}
         >
-          Log in by Github
+          Log in with Github
         </Button>
       </Form>
     );
