@@ -70,16 +70,7 @@ export const solveExerciseSlice = createSlice({
       prepare: (value, id) => {
         return { payload: { value, id } };
       }
-    },
-    updateHelper: {
-      reducer: (state, action) => {
-        const { value, id } = action.payload;
-        state.solutions[id].helpSolution = value;
-      },
-      prepare: (value, id) => {
-        return { payload: { value, id } };
-      }
-    },
+    }
   },
   extraReducers: {
     [fetchExercise.pending]: (state, action) => {
@@ -132,7 +123,7 @@ export const solveExerciseSlice = createSlice({
 
 /* export actions */
 export const {
-  update, updateHelper
+  update
 } = solveExerciseSlice.actions;
 
 
@@ -150,17 +141,7 @@ export const selectSolution = (state, id) => {
     arrayToArityMap(state.solveExercise.functions),
     parseFormulaWithPrecedence
   );
-  const value2 = state.solveExercise.solutions[id].helpSolution;
-  if(value2 === ""){
-    return {value, error, value2}
-  }
-  let error2 = parseFormalization(
-    value2, new Set(state.solveExercise.constants),
-    arrayToArityMap(state.solveExercise.predicates),
-    arrayToArityMap(state.solveExercise.functions),
-    parseFormulaWithPrecedence
-  );
-  return { value, error, value2, error2 };
+  return { value, error};
 };
 
 export const selectStatus = (state) => {
