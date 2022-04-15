@@ -109,7 +109,6 @@ export const userSlice = createSlice({
         state.isLoggedIn = true;
         state.isAdmin = data.isAdmin;
         localStorage["token"] = action.payload.token
-        console.log(localStorage);
       } else {
         state.error = '';
       }
