@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {Spinner, Alert, ListGroup} from 'react-bootstrap';
+import {Spinner, Alert, ListGroup, Table} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import {Link} from "react-router-dom";
@@ -7,17 +7,16 @@ import {
   selectUsers,
   selectStatus,
   selectError,
-  fetchAllUsersToProposition, fetchUsersSolutions, selectUsersSolution
+  fetchAllUsersToProposition, fetchUsersSolutions, selectUsersSolution, selectExerciseTitle, selectUserName
 } from "../../redux/progressPropositionsSlice";
 
 
-function UsersSolutionList({ solutions, users, status, error, fetchUsersSolutions })  {
+function UsersSolutionList({ solutions, users, status, error, name, id, title })  {
 
-  let { id } = useParams();
 
   useEffect( () => {
     if (status === 'idle') {
-      fetchUsersSolutions(id, id);
+      fetchUsersSolutions({exercise_id: id, user_name: name});
     }
   }, [status, id, users, fetchUsersSolutions]);
 
@@ -25,42 +24,56 @@ function UsersSolutionList({ solutions, users, status, error, fetchUsersSolution
   if (status === 'loading') {
     content = <Spinner animation="border" variant="primary" />;
   } else if (status === 'succeeded') {
-    const solution = solutions.map((x) => (
-        x.is_correct ?
-              <Alert variant="success" key={x.date}>
-                {x.date}
-                {x.solution}
-              </Alert>
-            : <Alert variant="danger" key={x.date}>
-                {x.date.replace("T", " ").split(".")[0] + " "}
-                {x.solution}
-              </Alert>
 
-    ));
     let s = [];
-    let date = null;
+    let table = [];
+    let proposition = null;
+    let first= false
     for(let i = 0; i < solutions.length; i++){
-
-      if(date !== solutions[i].date.split("T")[0]){
-
-        date = solutions[i].date.split("T")[0];
-        s.push(<h4 className="mb-4"> {date}</h4>)
+      if(proposition !== solutions[i].proposition && first){
+        proposition = solutions[i].proposition;
+        s.push(<h5   key={proposition}> {proposition}</h5>)
+        s.push(<Table striped bordered hover>
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>Solution</th>
+            <th>Correct</th>
+          </tr>
+          </thead>
+          <tbody>
+          {table}
+          </tbody>
+        </Table>
+          );
+        table = [];
+      }
+      else if(proposition === null){
+        proposition = solutions[i].proposition;
+        first = true;
       }
       if(solutions[i].is_correct){
-        s.push(<Alert variant="success" key={solutions[i].date}>
-          {solutions[i].date.split("T")[1].split(".")[0] + " "}
-          {solutions[i].solution}
-        </Alert>)
+        table.push(
+            <tr key={solutions[i].date}>
+              <td>
+                {solutions[i].date.split(".")[0].replace("T", " ") + " "}
+              </td>
+              <td>{solutions[i].solution}</td>
+              <td>  &#x2713;</td>
+            </tr>)
       }
       else{
-        s.push(<Alert variant="danger" key={solutions[i].date}>
-          {solutions[i].date.split("T")[1].split(".")[0] + " "}
-          {solutions[i].solution}
-        </Alert>)
+        table.push(<tr key={solutions[i].date}>
+              <td>
+                {solutions[i].date.split(".")[0].replace("T", " ") + " "}
+              </td>
+              <td>{solutions[i].solution}</td>
+              <td>  &#x2715;</td>
+            </tr>)
       }
     }
     content = (
-        <ListGroup>{ s }</ListGroup>
+        <div key={s}>{ s }</div>
     );
   } else if (status === 'failed') {
     content = (
@@ -72,7 +85,7 @@ function UsersSolutionList({ solutions, users, status, error, fetchUsersSolution
 
   return (
       <div>
-          <h2 className="mb-4">Solutions:</h2>
+          <h2 className="mb-4">{title} by {name} </h2>
           { content }
       </div>
   );
@@ -83,9 +96,11 @@ const mapStateToProps = (state) => {
     solutions: selectUsersSolution(state),
     status: selectStatus(state),
     error: selectError(state),
+    name: selectUserName(state),
+    title: selectExerciseTitle(state),
   };
 };
 
-const mapDispatchToProps = { fetchAllUsersToProposition, fetchUsersSolutions };
+const mapDispatchToProps = {  };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersSolutionList);

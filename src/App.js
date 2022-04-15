@@ -14,9 +14,8 @@ import AddExercise from './components/addExercise/AddExercise';
 import { logOut } from './redux/userSlice';
 import AdminRoute from "./components/login/AdminRoute";
 import Exercises from "./components/studentProgress/Exercises";
-import PropositionsToExercise from "./components/studentProgress/PropositionsToExercise";
-import UsersToProp from "./components/studentProgress/UsersToProp";
 import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
+import UsersToExercise from "./components/studentProgress/UsersToExercise";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -63,9 +62,8 @@ function App({ isLoggedIn, user, logOut }) {
           <Switch>
             <ProtectedRoute exact path="/" component={ExerciseList} />
             <AdminRoute exact path="/progress" component={Exercises} />
-            <AdminRoute exact path="/progress/exercise/proposition" component={PropositionsToExercise} />
-            <AdminRoute exact path="/progress/exercise/proposition/users" component={UsersToProp} />
-            <AdminRoute exact path="/progress/exercise/proposition/users/user" component={UserSolutionsList} />
+            <AdminRoute exact path="/progress/exercise/users" component={UsersToExercise} />
+            <AdminRoute exact path="/progress/exercise/users/solutions" component={UserSolutionsList} />
             <Route exact path="/login" component={LoginForm} />
             <ProtectedRoute path="/solve/:id" component={SolveExercise} />
 

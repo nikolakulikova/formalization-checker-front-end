@@ -7,11 +7,11 @@ import { fetchData } from './fetchData';
 
 /* async actions */
 
-export const fetchAllUsersToProposition = createAsyncThunk(
-    'exercises/fetchAllUsersToProposition',
-    async (proposition_id, { rejectWithValue }) => {
+export const fetchAllUsersToExercise = createAsyncThunk(
+    'exercises/fetchAllUsersToExercise',
+    async (exercise_id, { rejectWithValue }) => {
       try {
-        let response = await fetchData(`/api/exercises/progress/${proposition_id}`, 'GET');
+        let response = await fetchData(`/api/exercises/progress/${exercise_id}`, 'GET');
         return response;
       } catch (err) {
         return rejectWithValue(err.message);
@@ -20,9 +20,9 @@ export const fetchAllUsersToProposition = createAsyncThunk(
 );
 export const fetchUsersSolutions = createAsyncThunk(
     'exercises/fetchUsersSolutions',
-    async ({proposition_id, user_id}, { rejectWithValue }) => {
+    async ({exercise_id, user_name}, { rejectWithValue }) => {
       try {
-        let response = await fetchData(`/api/exercises/progress/user/${user_id}/${proposition_id}`, 'GET');
+        let response = await fetchData(`/api/exercises/progress/user/${user_name}/${exercise_id}`, 'GET');
         return response;
       } catch (err) {
         return rejectWithValue(err.message);
@@ -38,23 +38,27 @@ export const progressPropositionsSlice = createSlice({
     users: [],
     status: 'idle',
     error: null,
-    solutions: []
+    solutions: [],
+    exercise_id: null,
+    user: '',
   },
   reducers: {},
   extraReducers: {
-    [fetchAllUsersToProposition.pending]: (state, action) => {
+    [fetchAllUsersToExercise.pending]: (state, action) => {
       state.status = 'loading';
+      state.exercise_id = action.meta.arg
     },
-    [fetchAllUsersToProposition.fulfilled]: (state, action) => {
+    [fetchAllUsersToExercise.fulfilled]: (state, action) => {
       state.status = 'succeeded';
       state.users = action.payload;
     },
-    [fetchAllUsersToProposition.rejected]: (state, action) => {
+    [fetchAllUsersToExercise.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.payload;
     },
     [fetchUsersSolutions.pending]: (state, action) => {
       state.status = 'loading';
+      state.user = action.meta.arg.user_name;
     },
     [fetchUsersSolutions.fulfilled]: (state, action) => {
       state.status = 'succeeded';
@@ -81,8 +85,25 @@ export const selectProposition = (state) => {
   return null;
 };
 
+export const selectExerciseId = (state) => {
+  return state.propositions.exercise_id;
+};
+
+export const selectExerciseTitle = (state) => {
+  for(let i = 0; i < state.exercises.exercises.length; i++){
+    if(state.exercises.exercises[i].exercise_id === state.propositions.exercise_id){
+      return state.exercises.exercises[i].title
+    }
+  }
+  return null;
+};
+
+
 export const selectUsersSolution = (state) => {
   return state.propositions.solutions;
+};
+export const selectUserName = (state) => {
+  return state.propositions.user;
 };
 
 export const selectStatus = (state) => {
