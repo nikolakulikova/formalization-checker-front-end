@@ -16,6 +16,7 @@ import AdminRoute from "./components/login/AdminRoute";
 import Exercises from "./components/studentProgress/Exercises";
 import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
 import UsersToExercise from "./components/studentProgress/UsersToExercise";
+import UserList from "./components/addAdmins/UserList";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -53,6 +54,9 @@ function App({ isLoggedIn, user, logOut }) {
             <Nav.Link className="px-4" as={Link} to="/progress">
               Student progress
             </Nav.Link>
+            <Nav.Link className="px-4" as={Link} to="/admins">
+              Admin
+            </Nav.Link>
           </Nav>
           <Nav>
             { loginInfo }
@@ -61,6 +65,7 @@ function App({ isLoggedIn, user, logOut }) {
         <Container className="my-3">
           <Switch>
             <ProtectedRoute exact path="/" component={ExerciseList} />
+            <AdminRoute exact path="/admins" component={UserList} />
             <AdminRoute exact path="/progress" component={Exercises} />
             <AdminRoute exact path="/progress/exercise/users" component={UsersToExercise} />
             <AdminRoute exact path="/progress/exercise/users/solutions" component={UserSolutionsList} />
