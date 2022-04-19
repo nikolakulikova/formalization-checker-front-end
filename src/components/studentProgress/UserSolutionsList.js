@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
-import {Spinner, Alert, ListGroup, Table} from 'react-bootstrap';
+import {Spinner, Alert, Table} from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router';
-import {Link} from "react-router-dom";
 import {
-  selectUsers,
   selectStatus,
-  selectError,
-  fetchAllUsersToProposition, fetchUsersSolutions, selectUsersSolution, selectExerciseTitle, selectUserName
+  selectError, fetchUsersSolutions, selectUsersSolution, selectExerciseTitle, selectUserName
 } from "../../redux/progressPropositionsSlice";
 
 

@@ -3,10 +3,6 @@ import {
   createAsyncThunk
 } from '@reduxjs/toolkit';
 import {fetchData} from "./fetchData";
-import {userSlice} from "./userSlice";
-
-
-
 
 /* async actions */
 

@@ -128,6 +128,7 @@ export function getStringDomainAndPredicates(symbols, constants, language){
 function stringForPredicateAndFunctions(name){
   let p = "";
   for (let [key, value] of Object.entries(name)) {
+    // eslint-disable-next-line no-useless-concat
     p += "𝑖(" + key + ") = " + "{";
     if (value[value.length - 1] === undefined) {
       p += "}\n";

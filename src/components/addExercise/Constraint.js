@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SyntaxError from './SyntaxError';
 import {
-    selectConstantsParsed, selectConstraint, updateConstraint
+    selectConstraint, updateConstraint
 } from '../../redux/addExerciseSlice';
 
 

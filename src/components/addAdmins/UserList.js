@@ -3,7 +3,7 @@ import {Spinner, Alert, Table, Form, Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {
   selectStatus, selectError, addChanged, fetchAllUsers, saveAdmins,
-  selectAllUsers, selectChangedAdmins, changeUsers
+  selectAllUsers, selectChangedAdmins
 } from "../../redux/adminsSlice";
 
 

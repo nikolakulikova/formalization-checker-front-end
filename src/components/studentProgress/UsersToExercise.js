@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
-import {Spinner, Alert, ListGroup, Table} from 'react-bootstrap';
+import {Spinner, Alert, Table} from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router';
 import {Link} from "react-router-dom";
 import {
     selectUsers,
     selectStatus,
-    selectError, fetchUsersSolutions, selectProposition, fetchAllUsersToExercise, selectExerciseId, selectExerciseTitle
+    selectError, fetchUsersSolutions, selectProposition, fetchAllUsersToExercise, selectExerciseTitle
 } from "../../redux/progressPropositionsSlice";
 
 
-function UsersToExercise({ match, users, status, error, fetchAllUsersToExercise, fetchUsersSolutions, id, title })  {
+function UsersToExercise({ users, status, error, fetchAllUsersToExercise, fetchUsersSolutions, id, title })  {
 
 
 
