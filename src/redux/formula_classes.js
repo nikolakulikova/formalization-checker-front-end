@@ -1,4 +1,4 @@
-class BinaryFormula {
+export class BinaryFormula {
   constructor(lhs, rhs) {
     this.lhs = lhs;
     this.rhs = rhs;
@@ -10,7 +10,7 @@ class BinaryFormula {
   }
 }
 
-class QuantifiedFormula {
+export class QuantifiedFormula {
   constructor(originalSymbol, subf) {
     this.originalSymbol = originalSymbol;
     this.subf = subf;
@@ -22,7 +22,7 @@ class QuantifiedFormula {
   }
 }
 
-class Variable {
+export class Variable {
   constructor(originalSymbol) {
     this.originalSymbol = originalSymbol;
   }
@@ -33,7 +33,7 @@ class Variable {
   }
 }
 
-class Constant {
+export class Constant {
   constructor(originalSymbol) {
     this.originalSymbol = originalSymbol;
   }
@@ -43,7 +43,7 @@ class Constant {
   }
 }
 
-class FunctionApplication {
+export class FunctionApplication {
   constructor(originalSymbol, args) {
     this.originalSymbol = originalSymbol;
     this.args = args;
@@ -56,7 +56,7 @@ class FunctionApplication {
   }
 }
 
-class PredicateAtom {
+export class PredicateAtom {
   constructor(originalSymbol, args) {
     this.originalSymbol = originalSymbol;
     this.args = args;
@@ -69,10 +69,10 @@ class PredicateAtom {
   }
 }
 
-class EqualityAtom extends BinaryFormula{
+export class EqualityAtom extends BinaryFormula{
 }
 
-class Negation {
+export class Negation {
   constructor(subf) {
     this.subf = subf;
   }
@@ -82,40 +82,25 @@ class Negation {
   }
 }
 
-class Conjunction extends BinaryFormula{
+export class Conjunction extends BinaryFormula{
 }
 
-class Disjunction extends BinaryFormula{
+export class Disjunction extends BinaryFormula{
 }
 
-class Implication extends BinaryFormula{
+export class Implication extends BinaryFormula{
 }
 
-class Equivalence extends BinaryFormula{
+export class Equivalence extends BinaryFormula{
 }
 
-class ExistentialQuant extends QuantifiedFormula{
+export class ExistentialQuant extends QuantifiedFormula{
 }
 
-class UniversalQuant extends QuantifiedFormula{
+export class UniversalQuant extends QuantifiedFormula{
 }
 
 function addAll(a, b) {
   b.forEach((elem) => a.add(elem));
   return a;
 }
-
-module.exports = {
-    Variable,
-    Constant,
-    FunctionApplication,
-    PredicateAtom,
-    EqualityAtom,
-    Negation,
-    Conjunction,
-    Disjunction,
-    Implication,
-    Equivalence,
-    ExistentialQuant,
-    UniversalQuant
-};
