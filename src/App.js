@@ -18,9 +18,10 @@ import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
 import UsersToExercise from "./components/studentProgress/UsersToExercise";
 import UserList from "./components/addAdmins/UserList";
 import {BASE_NAME} from "./config";
+import {changeStatus} from "./redux/addExerciseSlice";
 
 
-function App({ isLoggedIn, user, logOut }) {
+function App({ isLoggedIn, user, logOut, changeStatus }) {
   let loginInfo = null;
   if (isLoggedIn) {
     loginInfo = (
@@ -49,7 +50,7 @@ function App({ isLoggedIn, user, logOut }) {
             <Nav.Link className="px-4" as={Link} to="/">
               Home
             </Nav.Link>
-            <Nav.Link className="px-4" as={Link} to="/add">
+            <Nav.Link className="px-4" as={Link} to="/add" onClick={() => changeStatus()}>
               Add
             </Nav.Link>
             <Nav.Link className="px-4" as={Link} to="/progress">
@@ -93,6 +94,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = { logOut };
+const mapDispatchToProps = { logOut, changeStatus };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
