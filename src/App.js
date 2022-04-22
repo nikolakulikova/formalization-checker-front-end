@@ -17,6 +17,7 @@ import Exercises from "./components/studentProgress/Exercises";
 import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
 import UsersToExercise from "./components/studentProgress/UsersToExercise";
 import UserList from "./components/addAdmins/UserList";
+import {BASE_NAME} from "./config";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -41,7 +42,7 @@ function App({ isLoggedIn, user, logOut }) {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASE_NAME}>
       <div className="App">
         <Navbar bg="dark" variant="dark" sticky="top">
           <Nav className="mr-auto">
