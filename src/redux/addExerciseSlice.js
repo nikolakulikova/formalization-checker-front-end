@@ -37,6 +37,19 @@ export const addNewExercise = createAsyncThunk(
   }
 );
 
+export const fetchExercise = createAsyncThunk(
+    'fetchExercise',
+    async (exercise_id, { rejectWithValue }) => {
+      try {
+        let response = await fetchData(
+            `/api/exercises/${exercise_id}`, 'GET'
+        );
+        return response;
+      } catch (err) {
+        return rejectWithValue(err.message);
+      }
+    }
+);
 
 /* slice */
 export const addExerciseSlice = createSlice({
@@ -138,6 +151,16 @@ export const addExerciseSlice = createSlice({
       state.status = 'succeeded';
     },
     [addNewExercise.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload;
+    },
+    [fetchExercise.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [fetchExercise.fulfilled]: (state, action) => {
+      state.status = 'succeeded';
+    },
+    [fetchExercise.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.payload;
     }

@@ -17,6 +17,8 @@ import Exercises from "./components/studentProgress/Exercises";
 import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
 import UsersToExercise from "./components/studentProgress/UsersToExercise";
 import UserList from "./components/addAdmins/UserList";
+import ExercisesList from "./components/editExercise/ExercisesList";
+import EditExercise from "./components/editExercise/EditExercise";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -51,6 +53,9 @@ function App({ isLoggedIn, user, logOut }) {
             <Nav.Link className="px-4" as={Link} to="/add">
               Add
             </Nav.Link>
+            <Nav.Link className="px-4" as={Link} to="/edit">
+              Edit
+            </Nav.Link>
             <Nav.Link className="px-4" as={Link} to="/progress">
               Student progress
             </Nav.Link>
@@ -73,6 +78,8 @@ function App({ isLoggedIn, user, logOut }) {
             <ProtectedRoute path="/solve/:id" component={SolveExercise} />
 
             <AdminRoute exact path="/add" component={AddExercise}  />
+            <AdminRoute exact path="/edit" component={ExercisesList}  />
+            <AdminRoute exact path="/edit/:id" component={EditExercise}  />
 
             <Route path="*" component={() => {
               return <Alert variant="danger">404 Not Found</Alert>
