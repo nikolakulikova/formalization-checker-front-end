@@ -31,7 +31,6 @@ function UsersSolutionList({ solutions, users, status, error, name, id, title })
         first = true;
       }
       else if(proposition !== solutions[i].proposition && first){
-        console.log(solutions[i].proposition)
         s.push(<h5   key={proposition}> {proposition}</h5>)
         s.push(<Table striped bordered hover>
           <thead>
