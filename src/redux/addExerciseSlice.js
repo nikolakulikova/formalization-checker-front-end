@@ -103,7 +103,8 @@ export const addExerciseSlice = createSlice({
     }],
 
     status: 'idle',
-    error: null
+    error: null,
+    added: null,
   },
   reducers: {
     updateExerciseTitle: (state, action) => {
@@ -177,13 +178,31 @@ export const addExerciseSlice = createSlice({
         return { payload: { value, i, j} };
       }
     },
+    changeStatus: {
+      reducer: (state, action) => {
+        state.added = null;
+      }
+    },
   },
   extraReducers: {
     [addNewExercise.pending]: (state, action) => {
       state.status = 'loading';
     },
     [addNewExercise.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
+      state.added = true;
+      state.title =  ''
+      state.description =  ''
+      state.constants =  ''
+      state.predicates = ''
+      state.functions =  ''
+      state.constraint = ''
+      state.propositions= [{
+        "proposition": '',
+        "formalizations": [''],
+        "constraints": ['']
+      }]
+
+      state.status = 'idle'
     },
     [addNewExercise.rejected]: (state, action) => {
       state.status = 'failed';
@@ -273,7 +292,8 @@ export const {
   removeProposition,
   removeFormalization,
   updateConstraints,
-  updateConstraint
+  updateConstraint,
+    changeStatus
 } = addExerciseSlice.actions;
 
 
