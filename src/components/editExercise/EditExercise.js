@@ -38,7 +38,7 @@ function EditExercise({ status, error, containsErrors, title, saveExercise }) {
   } else if (status === 'succeeded') {
     content = (
       <Alert variant="success">
-        Exercise <b>{ title }</b> was succefully added to the database.
+        Exercise  was succefully changed to the database.
       </Alert>
     );
   } else if (status === 'failed') {

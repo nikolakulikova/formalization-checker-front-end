@@ -181,6 +181,20 @@ export const addExerciseSlice = createSlice({
     changeStatus: {
       reducer: (state, action) => {
         state.added = null;
+        state.title = '';
+        state.description = '';
+        state.constants = '';
+        state.predicates = '';
+        state.functions = '';
+        state.constraint = '';
+        state.id = '';
+        state.propositions = [{
+          proposition: '',
+          proposition_id: '',
+          formalizations: [''],
+          constraints: ['']
+        }];
+
       }
     },
   },
