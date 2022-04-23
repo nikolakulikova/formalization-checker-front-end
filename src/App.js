@@ -17,8 +17,8 @@ import Exercises from "./components/studentProgress/Exercises";
 import UserSolutionsList from "./components/studentProgress/UserSolutionsList";
 import UsersToExercise from "./components/studentProgress/UsersToExercise";
 import UserList from "./components/addAdmins/UserList";
-import ExercisesList from "./components/editExercise/ExercisesList";
 import EditExercise from "./components/editExercise/EditExercise";
+import EditExerciseList from "./components/editExercise/EditExerciseList";
 
 
 function App({ isLoggedIn, user, logOut }) {
@@ -78,7 +78,7 @@ function App({ isLoggedIn, user, logOut }) {
             <ProtectedRoute path="/solve/:id" component={SolveExercise} />
 
             <AdminRoute exact path="/add" component={AddExercise}  />
-            <AdminRoute exact path="/edit" component={ExercisesList}  />
+            <AdminRoute exact path="/edit" component={EditExerciseList}  />
             <AdminRoute exact path="/edit/:id" component={EditExercise}  />
 
             <Route path="*" component={() => {

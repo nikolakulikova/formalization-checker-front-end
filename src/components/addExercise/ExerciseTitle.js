@@ -11,7 +11,7 @@ function ExerciseTitle({ value, update }) {
   return (
     <Form.Group>
       <Form.Label>
-          { value }
+          Exercise title:
       </Form.Label>
       <Form.Control
         type="text"
