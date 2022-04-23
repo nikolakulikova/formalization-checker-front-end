@@ -84,12 +84,19 @@ export const solveExerciseSlice = createSlice({
       state.functions = parseFunctions(state.exercise.functions);
       for (let p of state.exercise.propositions) {
         state.solutions[p.proposition_id] = {
-          solution: '',
+
+
           evaluation: null,
 
           status: 'idle',
           error: null,
         };
+        if(p.solution === null || p.solution === undefined){
+          state.solutions[p.proposition_id]["solution"] = '';
+        }
+        else{
+          state.solutions[p.proposition_id]["solution"] = p.solution
+        }
       }
     },
     [fetchExercise.rejected]: (state, action) => {
