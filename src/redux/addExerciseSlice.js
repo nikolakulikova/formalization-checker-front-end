@@ -41,7 +41,6 @@ export const saveExercise = createAsyncThunk(
   'saveExercise',
   async (_, { getState, rejectWithValue }) => {
     let exercise = selectExercise(getState());
-    console.log(exercise);
     if (!exercise) {
       return rejectWithValue("Exercise contains errors.");
     }
@@ -181,6 +180,7 @@ export const addExerciseSlice = createSlice({
     changeStatus: {
       reducer: (state, action) => {
         state.added = null;
+        state.status = 'idle';
         state.title = '';
         state.description = '';
         state.constants = '';
@@ -266,7 +266,7 @@ export const addExerciseSlice = createSlice({
       state.constants = exercise.constants;
       state.predicates = exercise.predicates;
       state.functions = exercise.functions;
-      state.constraint = exercise.constraint === undefined? "": exercise.constraint;
+      state.constraint = exercise.constraints === undefined? "": exercise.constraints;
       state.id = exercise.exercise_id;
       state.propositions = [];
       for (let i = 0; i < exercise.propositions.length; i++) {
