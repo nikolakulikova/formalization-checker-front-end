@@ -19,11 +19,12 @@ import UsersToExercise from "./components/studentProgress/UsersToExercise";
 import UserList from "./components/addAdmins/UserList";
 import {BASE_NAME} from "./config";
 import {changeStatus} from "./redux/addExerciseSlice";
+import {changeExerciseStatus} from "./redux/exercisesSlice";
 import EditExercise from "./components/editExercise/EditExercise";
 import EditExerciseList from "./components/editExercise/EditExerciseList";
 
 
-function App({ isLoggedIn, user, logOut, changeStatus }) {
+function App({ isLoggedIn, user, logOut, changeStatus, changeExerciseStatus }) {
   let loginInfo = null;
   if (isLoggedIn) {
     loginInfo = (
@@ -49,13 +50,13 @@ function App({ isLoggedIn, user, logOut, changeStatus }) {
       <div className="App">
         <Navbar bg="dark" variant="dark" sticky="top">
           <Nav className="mr-auto">
-            <Nav.Link className="px-4" as={Link} to="/">
+            <Nav.Link className="px-4" as={Link} to="/" onClick={() => changeExerciseStatus()}>
               Home
             </Nav.Link>
             <Nav.Link className="px-4" as={Link} to="/add" onClick={() => changeStatus()}>
               Add
             </Nav.Link>
-            <Nav.Link className="px-4" as={Link} to="/edit">
+            <Nav.Link className="px-4" as={Link} to="/edit" onClick={() => changeExerciseStatus()}>
               Edit
             </Nav.Link>
             <Nav.Link className="px-4" as={Link} to="/progress">
@@ -101,6 +102,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = { logOut, changeStatus };
+const mapDispatchToProps = { logOut, changeStatus, changeExerciseStatus };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
