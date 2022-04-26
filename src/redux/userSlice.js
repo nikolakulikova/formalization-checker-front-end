@@ -120,6 +120,10 @@ export const userSlice = createSlice({
   }
 });
 
+export const selectUser = (state) => {
+  return state.user.user.username;
+}
+
 
 /* export actions */
 export const {

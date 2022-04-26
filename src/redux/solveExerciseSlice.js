@@ -19,10 +19,11 @@ import {
 
 export const fetchExercise = createAsyncThunk(
   'solveExercise/fetchExercise',
-  async (exercise_id, { rejectWithValue }) => {
+  async ({exercise_id, user_name}, { rejectWithValue }) => {
     try {
+      console.log(user_name);
       let response = await fetchData(
-        `/api/exercises/${exercise_id}`, 'GET'
+        `/api/exercises/${exercise_id}`, 'POST', { username: user_name}
       );
       return response;
     } catch (err) {

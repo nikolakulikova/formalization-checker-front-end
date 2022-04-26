@@ -11,9 +11,10 @@ import {
 import {
   fetchExercise
 } from '../../redux/solveExerciseSlice';
+import {selectUser} from "../../redux/userSlice";
 
 
-function ExerciseList({ exercises, status, error, fetchAllExercises, fetchExercise }) {
+function ExerciseList({ exercises, status, error, fetchAllExercises, fetchExercise, username }) {
   useEffect(() => {
     if (status === 'idle') {
       fetchAllExercises();
@@ -28,7 +29,7 @@ function ExerciseList({ exercises, status, error, fetchAllExercises, fetchExerci
       <ListGroup.Item
         as={Link} to={`/solve/${x.exercise_id}`} key={x.exercise_id}
         variant="primary" action
-        onClick={() => fetchExercise(x.exercise_id)}
+        onClick={() => fetchExercise({exercise_id:x.exercise_id, user_name: username })}
       >
         { x.title }
       </ListGroup.Item>
@@ -53,6 +54,7 @@ function ExerciseList({ exercises, status, error, fetchAllExercises, fetchExerci
 const mapStateToProps = (state) => {
   return {
     exercises: selectExercises(state),
+    username: selectUser(state),
     status: selectStatus(state),
     error: selectError(state),
   };

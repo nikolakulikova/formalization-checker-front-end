@@ -9,6 +9,7 @@ import {
   fetchExercise
 } from '../../redux/solveExerciseSlice';
 import { useParams } from 'react-router';
+import {selectUser} from "../../redux/userSlice";
 
 
 function SolveExercise({ match, exercise, status, error, fetchExercise, user })  {
@@ -17,7 +18,7 @@ function SolveExercise({ match, exercise, status, error, fetchExercise, user }) 
 
   useEffect(() => {
     if (status === 'idle') {
-      fetchExercise(id);
+      fetchExercise({exercise_id : id, username : user});
     }
   }, [status, id, exercise, fetchExercise]);
 
@@ -64,7 +65,7 @@ const mapStateToProps = (state) => {
     exercise: selectExercise(state),
     status: selectStatus(state),
     error: selectError(state),
-    user: state.user.user.username,
+   user: selectUser(state),
   };
 };
 
