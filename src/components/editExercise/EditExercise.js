@@ -3,6 +3,7 @@ import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {
     saveExercise,
+    removeExercise,
   checkExercise,
   selectExerciseTitle
 } from '../../redux/addExerciseSlice';
@@ -12,7 +13,7 @@ import ExerciseTitle from '../addExercise/ExerciseTitle';
 import Description from '../addExercise/Description';
 
 
-function EditExercise({ status, error, containsErrors, title, saveExercise }) {
+function EditExercise({ status, error, containsErrors, removeExercise, saveExercise }) {
   let content = null;
   if (status === 'idle') {
     content = (
@@ -31,6 +32,15 @@ function EditExercise({ status, error, containsErrors, title, saveExercise }) {
         >
           Save exercise
         </Button>
+          <Button
+              className="mt-4 mb-5 float-left clearfix"
+              variant="danger"
+              size="lg"
+              disabled={containsErrors}
+              onClick={removeExercise}
+          >
+               Remove exercise
+          </Button>
       </Form>
     );
   } else if (status === 'loading') {
@@ -39,6 +49,12 @@ function EditExercise({ status, error, containsErrors, title, saveExercise }) {
     content = (
       <Alert variant="success">
         Exercise  was succefully changed to the database.
+      </Alert>
+    );
+  }else if (status === 'removed') {
+    content = (
+      <Alert variant="success">
+        Exercise  was succefully removed from database.
       </Alert>
     );
   } else if (status === 'failed') {
@@ -61,6 +77,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {saveExercise };
+const mapDispatchToProps = {saveExercise, removeExercise };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditExercise);

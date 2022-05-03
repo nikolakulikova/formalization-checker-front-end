@@ -59,7 +59,7 @@ function App({ isLoggedIn, user, logOut, changeStatus, changeExerciseStatus }) {
             <Nav.Link className="px-4" as={Link} to="/edit" onClick={() => changeExerciseStatus()}>
               Edit
             </Nav.Link>
-            <Nav.Link className="px-4" as={Link} to="/progress">
+            <Nav.Link className="px-4" as={Link} to="/progress" onClick={() => changeExerciseStatus()}>
               Student progress
             </Nav.Link>
             <Nav.Link className="px-4" as={Link} to="/admins">

@@ -55,6 +55,24 @@ export const saveExercise = createAsyncThunk(
   }
 );
 
+export const removeExercise = createAsyncThunk(
+  'saveExercise',
+  async (_, { getState, rejectWithValue }) => {
+    let exercise = selectExercise(getState());
+    if (!exercise) {
+      return rejectWithValue("Exercise contains errors.");
+    }
+    try {
+      let response = await fetchData(
+        '/api/exercises/edit/remove', 'POST', exercise
+      );
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 export const fetchSavedExercise = createAsyncThunk(
   'fetchSavedExercise',
   async (exercise_id, { getState, rejectWithValue }) => {
@@ -242,6 +260,29 @@ export const addExerciseSlice = createSlice({
       }];
     },
     [saveExercise.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload;
+    },
+    [removeExercise.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [removeExercise.fulfilled]: (state, action) => {
+      state.status = 'removed';
+      state.title = '';
+      state.description = '';
+      state.constants = '';
+      state.predicates = '';
+      state.functions = '';
+      state.constraint = '';
+      state.id = '';
+      state.propositions = [{
+        proposition: '',
+        proposition_id: '',
+        formalizations: [''],
+        constraints: ['']
+      }];
+    },
+    [removeExercise.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.payload;
     },
