@@ -30,8 +30,8 @@ function UsersToExercise({ users, status, error, fetchAllUsersToExercise, fetchU
               { x.user_name }
             </Link>
           </td>
-          <td>{x.solved}</td>
-          <td>{x.attempts}</td>
+          <td>{x.solved} / {x.all}</td>
+          <td>{x.successful_attempts} / {x.attempts}</td>
         </tr>
     ));
     content =<Table striped bordered hover>
@@ -39,7 +39,7 @@ function UsersToExercise({ users, status, error, fetchAllUsersToExercise, fetchU
         <tr>
             <th>Student</th>
             <th>Solved</th>
-            <th># Attempts</th>
+            <th>Successful attempts</th>
         </tr>
         </thead>
         <tbody>
