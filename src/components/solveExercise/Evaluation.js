@@ -73,7 +73,7 @@ const getMessage = (evaluation) => {
           if (evaluation.iFormalizationSolution !== 'null') {
               return (
                   <Alert variant="danger">
-                      <details>
+                      <details open="true">
                           <summary><b>Riešenie je nesprávne.</b>
                           <p>Vieme nájsť konkrétnu štruktúru,
                               v ktorej je hľadaná správna formalizácia pravdivá,
@@ -95,7 +95,7 @@ const getMessage = (evaluation) => {
           } else {
               return (
                   <Alert variant="danger">
-                      <details >
+                      <details open="true">
                           <summary><b>Riešenie je nesprávne.</b>
                               <p>Nepodarilo sa nájsť štruktúru, na vaše riešenie sa radšej opýtajte.</p></summary>
 
@@ -108,7 +108,7 @@ const getMessage = (evaluation) => {
           if (evaluation.iSolutionToFormalization !== 'null') {
               return (
                   <Alert variant="danger">
-                      <details>
+                      <details open="true">
                          <summary> <b>Riešenie je nesprávne.</b>
                           <p>Vieme nájsť konkrétnu štruktúru,
                               v ktorej je vaša formalizácia pravdivá,
@@ -125,7 +125,7 @@ const getMessage = (evaluation) => {
           } else {
               return (
                   <Alert variant={"danger"}>
-                      <details>
+                      <details open="true">
                           <summary><b>Riešenie je nesprávne.</b>
                               <p>Nepodarilo sa nájsť štruktúru, na vaše riešenie sa radšej opýtajte.</p></summary>
                       </details>
@@ -135,7 +135,7 @@ const getMessage = (evaluation) => {
       } else {
           return (
               <Alert variant={"danger"}>
-                  <details>
+                  <details open="true">
                       <summary><b>Riešenie je nesprávne.</b>
                       <p>Vieme nájsť konkrétne štruktúry,
                           v ktorých je vaša formalizácia pravdivá,
