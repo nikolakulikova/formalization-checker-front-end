@@ -46,6 +46,17 @@ function SolveExercise({ match, exercise, status, error, fetchExercise, user }) 
         <p>{ exercise.functions }</p>
         <h5 className="mt-4">Description</h5>
         <p>{ exercise.description }</p>
+         <details ><summary className="mt-4">Symbols which are accepted</summary>
+            <p> Negation symbols : ¬, -, !, ~, \neg, \lnot <br/>
+                Equality symbols : =, ≐<br/>
+                Inequality symbols : ≠, !=, /=, \neq, {"<"}{">"}<br/>
+                Conjunction symbols : \wedge, \land, &&, &, /\, ∧<br/>
+                Disjunction symbols : \vee, \lor, ||, |, \/, ∨<br/>
+                Implication symbols : \to, →, -><br/>
+                Universal  symbols : ↔︎, ⟷, ⇔, ⟺, ≡, {"<"}->, {"<"}-->, {"<"}=>, {"<"}==>, ===, \lequiv, \leftrightarrow, \equivalent, \equiv<br/>
+                Exist quantifier symbols : \exists, \e, \E, ∃<br/>
+                Universal quantifier symbols : \forall, \a, \A, ∀ </p>
+         </details>
         { propositions_list }
       </div>
     );
