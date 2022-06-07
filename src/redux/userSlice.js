@@ -17,7 +17,7 @@ export const logIn = createAsyncThunk(
       data["username"] = username;
       data["password"] = password;
       let response = await fetchData(
-          `/api/exercises/logIn`, 'POST', data
+          `/api/exercises/authentication/logIn/admin`, 'POST', data
       );
 
     return response;

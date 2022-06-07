@@ -6,7 +6,8 @@ export const fetchData = async (route, method, body = undefined) => {
     method: method,
     headers: { "Content-Type": "application/json"}
   }
-  if(localStorage.getItem("token") !== undefined){
+
+  if(localStorage.getItem("token") !== undefined && localStorage.getItem("token") !== null){
     config.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
   }
   if (body) {
